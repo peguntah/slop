@@ -1,0 +1,1719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cook Buck Club</title>
+    <style>
+        :root {
+            --sand: #f3eee4;
+            --sand-dark: #d9cfbf;
+            --sage: #9fb092;
+            --deep-sage: #4c5b4f;
+            --clay: #b47b59;
+            --moss: #5f6f63;
+            --text: #2d261f;
+            --glass: rgba(255, 255, 255, 0.65);
+            --stroke: rgba(255, 255, 255, 0.45);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: var(--text);
+            background: radial-gradient(circle at top, #f9f6f1 0%, #e8e2d4 35%, #d9cfbf 70%, #cbbda8 100%);
+            position: relative;
+            overflow-x: hidden;
+            padding: 3rem 0;
+        }
+
+        body::before,
+        body::after {
+            content: "";
+            position: absolute;
+            width: 520px;
+            height: 520px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0));
+            filter: blur(2px);
+            z-index: 0;
+        }
+
+        body::before {
+            top: 2rem;
+            left: -200px;
+        }
+
+        body::after {
+            bottom: -100px;
+            right: -220px;
+        }
+
+        .page {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .glass {
+            background: var(--glass);
+            border-radius: 28px;
+            border: 1px solid var(--stroke);
+            box-shadow: 0 20px 50px rgba(46, 43, 37, 0.15);
+            backdrop-filter: blur(22px) saturate(160%);
+        }
+
+        .sidebar {
+            flex: 0 0 280px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .brand h2 {
+            margin: 0.25rem 0;
+            font-size: 1.9rem;
+            letter-spacing: 0.03em;
+        }
+
+        .brand .label {
+            text-transform: uppercase;
+            font-size: 0.76rem;
+            letter-spacing: 0.2em;
+            color: var(--moss);
+        }
+
+        .sidebar-block {
+            padding: 1.25rem;
+            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+        }
+
+        .sidebar-block h3 {
+            margin-top: 0;
+            margin-bottom: 0.4rem;
+        }
+
+        .sidebar-block p {
+            margin-top: 0;
+            margin-bottom: 0.75rem;
+            color: rgba(45, 38, 31, 0.75);
+        }
+
+        .sidebar-links {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .sidebar-links a {
+            text-decoration: none;
+            color: var(--deep-sage);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.4rem 0.2rem;
+        }
+
+        .sidebar-links a::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--clay);
+        }
+
+        .pill-link {
+            display: inline-flex;
+            padding: 0.55rem 1.2rem;
+            border-radius: 999px;
+            border: 1px solid rgba(91, 100, 91, 0.2);
+            text-decoration: none;
+            color: var(--moss);
+            font-weight: 600;
+            font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .pill-link.subtle {
+            background: transparent;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .panel {
+            padding: 2rem;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 2rem;
+        }
+
+        .eyebrow {
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-size: 0.75rem;
+            color: var(--moss);
+            margin-bottom: 0.8rem;
+        }
+
+        .hero h1 {
+            margin: 0;
+            font-size: clamp(2rem, 4vw, 3rem);
+            line-height: 1.1;
+        }
+
+        .hero p {
+            max-width: 36ch;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1.25rem;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 16px;
+            padding: 0.65rem 1.3rem;
+            font-weight: 600;
+            font-size: 0.93rem;
+            cursor: pointer;
+            transition: transform 150ms ease, box-shadow 150ms ease;
+        }
+
+        .btn.primary {
+            background: linear-gradient(120deg, var(--sage), var(--moss));
+            color: white;
+            box-shadow: 0 10px 25px rgba(95, 111, 99, 0.35);
+        }
+
+        .btn.ghost {
+            background: rgba(255, 255, 255, 0.4);
+            color: var(--deep-sage);
+            border: 1px solid rgba(91, 100, 91, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn[disabled] {
+            opacity: 0.45;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .hero-card {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .hero-card h3 {
+            margin: 0;
+        }
+
+        .cookbook-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--deep-sage);
+            margin: 0;
+        }
+
+        .hero-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .hero-list li {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.55);
+            padding: 0.75rem 1rem;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            font-size: 0.95rem;
+        }
+
+        .section-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .forecast {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .forecast-card {
+            padding: 1.5rem;
+            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .forecast-card h3 {
+            margin: 0.35rem 0;
+        }
+
+        .forecast-card .eyebrow {
+            margin: 0;
+        }
+
+        .forecast-meta {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .forecast-meta li {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .location-pill {
+            align-self: flex-start;
+            padding: 0.35rem 0.9rem;
+            border-radius: 999px;
+            background: rgba(76, 91, 79, 0.1);
+            color: var(--deep-sage);
+            font-weight: 600;
+            border: 1px solid rgba(76, 91, 79, 0.25);
+            font-size: 0.85rem;
+        }
+
+        .forecast-note {
+            margin: 0;
+            color: rgba(45, 38, 31, 0.75);
+        }
+
+        .featured-date-pill {
+            display: inline-flex;
+            flex-direction: column;
+            padding: 0.9rem 1.2rem;
+            border-radius: 18px;
+            background: rgba(95, 111, 99, 0.12);
+            border: 1px solid rgba(95, 111, 99, 0.25);
+            gap: 0.2rem;
+        }
+
+        .featured-date-pill strong {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: rgba(45, 38, 31, 0.7);
+        }
+
+        .featured-date-pill span {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--deep-sage);
+        }
+
+        .override-note {
+            display: inline-block;
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: rgba(180, 123, 89, 0.95);
+        }
+
+        .override-note.hidden {
+            display: none;
+        }
+
+        .calendar-shell {
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .calendar-header-title {
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .calendar-header-title span {
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(45, 38, 31, 0.6);
+        }
+
+        .calendar-header-title h3 {
+            margin: 0.2rem 0 0;
+        }
+
+        .calendar-nav {
+            display: inline-flex;
+            gap: 0.4rem;
+            align-items: center;
+        }
+        .calendar-nav button {
+            border: 1px solid rgba(95, 111, 99, 0.3);
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 16px;
+            min-width: 42px;
+            height: 42px;
+            padding: 0 0.75rem;
+            font-weight: 600;
+            color: var(--deep-sage);
+            cursor: pointer;
+        }
+
+        .month-select {
+            border-radius: 16px;
+            border: 1px solid rgba(95, 111, 99, 0.3);
+            background: rgba(255, 255, 255, 0.85);
+            font: inherit;
+            padding: 0 1rem;
+            color: var(--deep-sage);
+            height: 42px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(40px, 1fr));
+            gap: 0.35rem;
+        }
+
+        .calendar-day-name {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: rgba(45, 38, 31, 0.5);
+            text-align: center;
+        }
+
+        .calendar-day {
+            border: 1px solid rgba(95, 111, 99, 0.25);
+            border-radius: 14px;
+            min-height: 70px;
+            background: rgba(255, 255, 255, 0.65);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-between;
+            padding: 0.6rem 0.7rem;
+            font-size: 1rem;
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        .calendar-day .day-number {
+            font-weight: 600;
+        }
+
+        .calendar-day .vote-tag {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 999px;
+            background: rgba(180, 123, 89, 0.12);
+            color: var(--clay);
+            border: 1px solid rgba(180, 123, 89, 0.25);
+        }
+
+        .calendar-day.suggested {
+            background: rgba(159, 176, 146, 0.25);
+            border-color: rgba(159, 176, 146, 0.6);
+        }
+
+        .calendar-day.manual {
+            border-color: rgba(180, 123, 89, 0.55);
+            background: rgba(180, 123, 89, 0.18);
+        }
+
+        .calendar-day.lead {
+            background: rgba(180, 123, 89, 0.22);
+            border-color: rgba(180, 123, 89, 0.6);
+            box-shadow: inset 0 0 0 1px rgba(180, 123, 89, 0.4);
+        }
+
+        .calendar-day.selected {
+            outline: 2px solid rgba(76, 91, 79, 0.55);
+        }
+
+        .calendar-day.empty {
+            background: transparent;
+            border: none;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .calendar-legend {
+            margin-top: 0.75rem;
+            font-size: 0.85rem;
+            color: rgba(45, 38, 31, 0.6);
+        }
+
+        .vote-buttons {
+            display: flex;
+            gap: 0.35rem;
+        }
+
+        .vote button {
+            width: fit-content;
+        }
+
+        .undo-btn {
+            padding: 0.35rem 0.9rem;
+            border-radius: 16px;
+            border: 1px solid rgba(91, 100, 91, 0.25);
+            background: transparent;
+            color: rgba(45, 38, 31, 0.7);
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .event-cookbook {
+            margin: 0.2rem 0 0;
+            font-size: 0.9rem;
+            color: rgba(45, 38, 31, 0.8);
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        label span {
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: rgba(45, 38, 31, 0.6);
+        }
+
+        .suggestion-form label {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            margin: 0;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            margin-top: 0.4rem;
+            border-radius: 16px;
+            border: 1px solid rgba(91, 100, 91, 0.25);
+            background: rgba(255, 255, 255, 0.8);
+            font: inherit;
+            min-height: 52px;
+        }
+
+        .suggestion-form input {
+            margin-top: 0;
+        }
+
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        form button[type="submit"] {
+            justify-self: flex-start;
+        }
+
+        .suggestion-form {
+            grid-template-columns: minmax(220px, 3fr) minmax(150px, 1fr);
+            align-items: end;
+            max-width: 560px;
+        }
+
+        .suggestion-form button[type="submit"] {
+            grid-column: auto;
+            align-self: end;
+            width: 100%;
+            padding: 0;
+            border-radius: 18px;
+            height: 48px;
+        }
+
+        .suggestion-form .btn {
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        @media (max-width: 540px) {
+            .suggestion-form {
+                grid-template-columns: 1fr;
+            }
+
+            .suggestion-form button[type="submit"] {
+                width: 100%;
+            }
+        }
+
+        .suggestion-list {
+            list-style: none;
+            margin: 1.5rem 0 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .availability-note {
+            margin: 0.2rem 0 0.8rem;
+            font-size: 0.9rem;
+            color: rgba(45, 38, 31, 0.7);
+        }
+
+        .name-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            max-width: 500px;
+            align-items: flex-end;
+            margin-top: 1rem;
+        }
+
+        .name-form label {
+            flex: 1 1 240px;
+        }
+
+        .name-form button {
+            padding: 0.75rem 1.4rem;
+        }
+
+        .greeting-message {
+            margin: 1rem 0 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--deep-sage);
+        }
+
+        .planning-body {
+            display: none;
+            opacity: 0;
+            transform: translateY(18px);
+            pointer-events: none;
+            transition: opacity 220ms ease, transform 220ms ease;
+        }
+
+        .planning-body.active {
+            display: block;
+            opacity: 1;
+            transform: none;
+            pointer-events: auto;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .calendar-tooltip {
+            position: absolute;
+            min-width: 220px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 10px 35px rgba(45, 38, 31, 0.25);
+            padding: 1rem 1.2rem;
+            z-index: 20;
+        }
+
+        .tooltip-day {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--deep-sage);
+            margin-bottom: 0.4rem;
+            border-bottom: 1px solid rgba(45, 38, 31, 0.1);
+            padding-bottom: 0.4rem;
+        }
+
+        .tooltip-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .tooltip-list li {
+            font-size: 0.9rem;
+            color: rgba(45, 38, 31, 0.85);
+        }
+
+        .tooltip-empty {
+            font-size: 0.85rem;
+            color: rgba(45, 38, 31, 0.6);
+        }
+
+        .tooltip-actions {
+            margin-top: 0.8rem;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .contribution-item {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 0.5rem;
+            padding: 1rem 1.2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .contribution-item strong {
+            font-size: 1rem;
+        }
+
+        .contribution-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: rgba(45, 38, 31, 0.7);
+        }
+
+        .contribution-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .suggestion-item {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1.25rem;
+            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+        }
+
+        .suggestion-item h3 {
+            margin: 0 0 0.25rem;
+        }
+
+        .suggestion-item p {
+            margin: 0.1rem 0;
+            color: rgba(45, 38, 31, 0.7);
+        }
+
+        .vote {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+
+        .vote-count {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--clay);
+        }
+
+        .vote button {
+            padding: 0.5rem 1rem;
+            border-radius: 18px;
+            border: 1px solid rgba(180, 123, 89, 0.4);
+            background: rgba(180, 123, 89, 0.15);
+            color: var(--clay);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 1.5rem;
+            color: rgba(45, 38, 31, 0.6);
+        }
+
+        .event-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .event-card {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .event-card header h3 {
+            margin: 0.2rem 0;
+        }
+
+        .event-date {
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-size: 0.72rem;
+            color: rgba(45, 38, 31, 0.6);
+        }
+
+        .menu-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .menu-list li {
+            padding: 0.75rem 1rem;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.55);
+            display: flex;
+            justify-content: space-between;
+            gap: 0.75rem;
+            font-size: 0.92rem;
+        }
+
+        .menu-list strong {
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--moss);
+        }
+
+        .event-actions {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .upload {
+            border-radius: 22px;
+            padding: 1rem 1.25rem;
+            border: 1px dashed rgba(95, 111, 99, 0.5);
+            background: rgba(255, 255, 255, 0.4);
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            cursor: pointer;
+        }
+
+        .upload input {
+            display: none;
+        }
+
+        .upload-text {
+            font-weight: 600;
+        }
+
+        .upload-note {
+            color: rgba(45, 38, 31, 0.65);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 960px) {
+            .page {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                flex: 1;
+            }
+        }
+
+        @media (max-width: 620px) {
+            form {
+                grid-template-columns: 1fr;
+            }
+
+            .panel {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <aside class="sidebar glass">
+            <div class="brand">
+                <p class="label">Cook Buck Club</p>
+                <h2>Cook Buck Club</h2>
+                <p>Friends-only supper circle</p>
+            </div>
+            <div class="sidebar-block">
+                <h3>Calendar Poll</h3>
+                <p>Share the dates that work for you and vote on our next warm table.</p>
+                <a class="pill-link" href="#calendar">Open calendar</a>
+            </div>
+            <div class="sidebar-block">
+                <h3>Past Events</h3>
+                <p>Post recaps, upload photos, and note the dishes that made the night.</p>
+                <ul class="sidebar-links">
+                    <li><a href="#event-1">Fireside Mezze</a></li>
+                    <li><a href="#event-2">Coastal Comforts</a></li>
+                    <li><a href="#event-3">Harvest Potluck</a></li>
+                </ul>
+                <a class="pill-link subtle" href="#past-events">Browse archive</a>
+            </div>
+        </aside>
+
+        <main>
+            <section class="panel glass hero" id="top">
+                <div class="hero-card glass" style="grid-column: 1 / -1;">
+                    <p class="eyebrow">Upcoming cookbook</p>
+                    <h1>Salt, Fat, Acid, Heat</h1>
+                    <p class="cookbook-title">Host: Tawny</p>
+                    <p>A loose excuse to hang out with family and close friends. Add what you want to cook below.</p>
+                </div>
+                <div class="panel glass" style="grid-column: 1 / -1;">
+                    <div class="section-header">
+                        <div>
+                            <p class="eyebrow">Potluck check-in</p>
+                            <h2>Who's cooking what?</h2>
+                        </div>
+                    </div>
+                    <form id="contribution-form" class="name-form">
+                        <label>
+                            <span>Name</span>
+                            <input type="text" id="contribution-name" placeholder="e.g. Jamie" required>
+                        </label>
+                        <label>
+                            <span>Dish</span>
+                            <input type="text" id="contribution-dish" placeholder="e.g. Herby citrus salad" required>
+                        </label>
+                        <label>
+                            <span>Page #</span>
+                            <input type="text" id="contribution-page" placeholder="e.g. 126" required>
+                        </label>
+                        <button class="btn primary" type="submit" id="contribution-submit">Add dish</button>
+                        <button class="btn ghost hidden" type="button" id="contribution-cancel">Cancel edit</button>
+                    </form>
+                    <ul id="contributions-list" class="suggestion-list"></ul>
+                </div>
+            </section>
+
+            <section class="panel glass calendar" id="calendar">
+                <div class="section-header">
+                    <div>
+                        <h2>Party Planning</h2>
+                        <p>We focus on one gathering at a time. Confirm the lead date below or submit another if it suits you better.</p>
+                    </div>
+                </div>
+                <div class="forecast">
+                    <article class="forecast-card glass">
+                        <p class="eyebrow">Party planning</p>
+                        <h3>Loose plans</h3>
+                        <ul class="forecast-meta">
+                            <li><strong>Date on deck</strong><span id="featured-date-value">Date TBD</span></li>
+                            <li><strong>Gathering time</strong><span>7:00 PM-ish</span></li>
+                            <li><strong>City</strong><span>Woodburn, OR</span></li>
+                        </ul>
+                        <small class="override-note hidden" id="override-note">Manual override active</small>
+                    </article>
+                    <article class="forecast-card glass">
+                        <span class="location-pill">Location: Tawny's yard</span>
+                        <p>Vote to confirm a night through the calendar or toss in new dates that work for you.</p>
+                    </article>
+                </div>
+                <form id="name-form" class="name-form">
+                    <label>
+                        <span>Who are you?</span>
+                        <input type="text" name="attendee" placeholder="e.g. Jamie" required>
+                    </label>
+                    <button class="btn primary" type="submit">Submit</button>
+                </form>
+                <p id="planner-greeting" class="greeting-message hidden"></p>
+                <div id="planning-body" class="planning-body">
+                    <form id="suggestion-form" class="suggestion-form">
+                        <label>
+                            <span>Proposed date</span>
+                            <input type="date" name="date" required>
+                        </label>
+                        <button class="btn primary" type="submit">Add Date</button>
+                    </form>
+                    <div class="calendar-shell">
+                        <div class="calendar-header">
+                            <div class="calendar-nav">
+                                <button type="button" data-calendar-nav="prev">&#8249;</button>
+                                <select id="month-jump" class="month-select" aria-label="Jump to month"></select>
+                                <button type="button" data-calendar-nav="next">&#8250;</button>
+                            </div>
+                            <div class="calendar-header-title">
+                                <span>Browse months</span>
+                                <h3 id="calendar-month"></h3>
+                            </div>
+                            <div class="calendar-nav">
+                                <button type="button" data-calendar-nav="today">Today</button>
+                            </div>
+                        </div>
+                        <div class="calendar-grid" id="calendar-grid"></div>
+                        <p class="calendar-legend">Soft green squares mark suggested dates. Clay highlights show the manual pick. Tap any suggested date to mark your availability.</p>
+                    </div>
+                    <ul id="suggestion-list" class="suggestion-list">
+                        <li class="empty-state">Collecting suggestions...</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="panel glass past-events" id="past-events">
+                <div class="section-header">
+                    <div>
+                        <p class="eyebrow">Recap vault</p>
+                        <h2>Past Event Menu Pages</h2>
+                        <p>Every gathering gets a simple post to log the cookbook, menu lineup, page numbers, and shared photos.</p>
+                    </div>
+                    <button class="btn ghost" type="button">Start a new recap</button>
+                </div>
+                <div class="event-grid">
+                    <article class="event-card glass" id="event-1">
+                        <header>
+                            <p class="event-date">May 12, 2024</p>
+                            <h3>Fireside Mezze</h3>
+                            <p class="event-cookbook"><strong>"Jerusalem"</strong> &middot; Yotam Ottolenghi &middot; Pages 44-71 &middot; Grains &amp; spreads</p>
+                        </header>
+                        <ul class="menu-list">
+                            <li><strong>Marcos</strong><span>Charred Eggplant Dip &middot; p. 52</span></li>
+                            <li><strong>Tasha</strong><span>Sumac Chicken Skewers &middot; p. 63</span></li>
+                            <li><strong>Priya</strong><span>Sesame Orange Salad &middot; p. 68</span></li>
+                        </ul>
+                        <div class="event-actions">
+                            <button class="btn ghost" type="button">Open recap page</button>
+                        </div>
+                        <label class="upload glass">
+                            <input type="file" accept="image/*" multiple>
+                            <span class="upload-text">Drop or tap to add photos</span>
+                            <small class="upload-note" data-default="We'll only share within the club.">We'll only share within the club.</small>
+                        </label>
+                    </article>
+
+                    <article class="event-card glass" id="event-2">
+                        <header>
+                            <p class="event-date">March 30, 2024</p>
+                            <h3>Coastal Comforts</h3>
+                            <p class="event-cookbook"><strong>"Salt, Fat, Acid, Heat"</strong> &middot; Samin Nosrat &middot; Pages 118-141 &middot; Bright citrus</p>
+                        </header>
+                        <ul class="menu-list">
+                            <li><strong>Jon</strong><span>Buttermilk Brined Roast &middot; p. 127</span></li>
+                            <li><strong>Elaine</strong><span>Herby Citrus Salad &middot; p. 134</span></li>
+                            <li><strong>Ruth</strong><span>Miso Citrus Cod &middot; p. 140</span></li>
+                        </ul>
+                        <div class="event-actions">
+                            <button class="btn ghost" type="button">Open recap page</button>
+                        </div>
+                        <label class="upload glass">
+                            <input type="file" accept="image/*" multiple>
+                            <span class="upload-text">Add a gallery moment</span>
+                            <small class="upload-note" data-default="Upload up to 10 images per event.">Upload up to 10 images per event.</small>
+                        </label>
+                    </article>
+
+                    <article class="event-card glass" id="event-3">
+                        <header>
+                            <p class="event-date">February 10, 2024</p>
+                            <h3>Harvest Potluck</h3>
+                            <p class="event-cookbook"><strong>"Six Seasons"</strong> &middot; Joshua McFadden &middot; Pages 216-243 &middot; Winter roots</p>
+                        </header>
+                        <ul class="menu-list">
+                            <li><strong>Jess</strong><span>Roasted Carrot Tangle &middot; p. 222</span></li>
+                            <li><strong>Leo</strong><span>Farro &amp; Fennel Bake &middot; p. 230</span></li>
+                            <li><strong>Ami</strong><span>Chocolate Rye Tart &middot; p. 241</span></li>
+                        </ul>
+                        <div class="event-actions">
+                            <button class="btn ghost" type="button">Open recap page</button>
+                        </div>
+                        <label class="upload glass">
+                            <input type="file" accept="image/*" multiple>
+                            <span class="upload-text">Upload more memories</span>
+                            <small class="upload-note" data-default="Drag files or tap to browse.">Drag files or tap to browse.</small>
+                        </label>
+                    </article>
+                </div>
+            </section>
+        </main>
+    </div>
+
+                    <script>
+        const suggestionList = document.getElementById("suggestion-list");
+        const suggestionForm = document.getElementById("suggestion-form");
+        const nameForm = document.getElementById("name-form");
+        const greetingMessage = document.getElementById("planner-greeting");
+        const planningBody = document.getElementById("planning-body");
+        const featuredDateValue = document.getElementById("featured-date-value");
+        const overrideNote = document.getElementById("override-note");
+        const calendarGrid = document.getElementById("calendar-grid");
+        const calendarMonthLabel = document.getElementById("calendar-month");
+        const dateInput = suggestionForm.querySelector('input[name="date"]');
+        const monthJump = document.getElementById("month-jump");
+        const contributionsList = document.getElementById("contributions-list");
+        const contributionForm = document.getElementById("contribution-form");
+        const contributionName = document.getElementById("contribution-name");
+        const contributionDish = document.getElementById("contribution-dish");
+        const contributionPage = document.getElementById("contribution-page");
+        const contributionSubmit = document.getElementById("contribution-submit");
+        const contributionCancel = document.getElementById("contribution-cancel");
+
+        const suggestions = [
+            {
+                id: 1,
+                date: "2024-07-19",
+                details: "Patio spritz bar &middot; focaccia",
+                attendees: new Set(["Mira", "Priya", "Jamie"])
+            },
+            {
+                id: 2,
+                date: "2024-07-27",
+                details: "Lazy brunch plates",
+                attendees: new Set(["Jon", "Elaine"])
+            }
+        ];
+
+        let suggestionId = suggestions.length;
+        let contributions = [];
+        let contributionCounter = 0;
+        let editingContributionId = null;
+        let currentName = "";
+        const manualOverrideDate = null; // Set to "YYYY-MM-DD" to pin a date manually.
+        const currentMonth = new Date();
+        currentMonth.setDate(1);
+        const earliestMonth = new Date();
+        earliestMonth.setDate(1);
+
+        const calendarTooltip = document.createElement("div");
+        calendarTooltip.id = "calendar-tooltip";
+        calendarTooltip.className = "calendar-tooltip hidden";
+        document.body.appendChild(calendarTooltip);
+        let tooltipDate = null;
+        let tooltipButton = null;
+
+        const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+        const parseDateString = (value) => {
+            const [year, month, day] = value.split("-").map(Number);
+            return new Date(year, month - 1, day);
+        };
+
+        const formatDate = (value, options = { weekday: "short", month: "short", day: "numeric" }) =>
+            parseDateString(value).toLocaleDateString(undefined, options);
+
+        const formatLongDate = (value) =>
+            formatDate(value, { weekday: "long", month: "long", day: "numeric" });
+
+        const pad = (value) => String(value).padStart(2, "0");
+        const todayIso = (() => {
+            const now = new Date();
+            return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+        })();
+        dateInput.min = todayIso;
+
+        const defaultContributions = [
+            { id: 1, name: "Mira", dish: "Citrus + fennel salad", page: "118" },
+            { id: 2, name: "Jon", dish: "Buttermilk-brined roast", page: "132" },
+            { id: 3, name: "Priya", dish: "Salted caramel pots", page: "210" }
+        ];
+
+        const ensureAttendees = (item) => {
+            if (!item.attendees) {
+                item.attendees = new Set();
+            }
+            return item.attendees;
+        };
+
+        const addAttendee = (item, name) => {
+            const trimmed = name.trim();
+            if (!trimmed) {
+                return false;
+            }
+            const attendees = ensureAttendees(item);
+            const before = attendees.size;
+            attendees.add(trimmed);
+            return attendees.size > before;
+        };
+
+        const removeAttendee = (item, name) => {
+            const trimmed = name.trim();
+            if (!trimmed) {
+                return false;
+            }
+            const attendees = ensureAttendees(item);
+            return attendees.delete(trimmed);
+        };
+
+        const getScore = (item) => ensureAttendees(item).size;
+
+        const getTopSuggestion = () => {
+            if (!suggestions.length) {
+                return null;
+            }
+
+            return [...suggestions]
+                .sort((a, b) => {
+                    const scoreDiff = getScore(b) - getScore(a);
+                    if (scoreDiff !== 0) {
+                        return scoreDiff;
+                    }
+                    return parseDateString(a.date) - parseDateString(b.date);
+                })[0];
+        };
+
+        const updateFeaturedDate = () => {
+            const leadDate = manualOverrideDate || (getTopSuggestion()?.date ?? null);
+            if (leadDate) {
+                featuredDateValue.textContent = formatLongDate(leadDate);
+            } else {
+                featuredDateValue.textContent = "Date TBD";
+            }
+
+            if (manualOverrideDate) {
+                overrideNote.classList.remove("hidden");
+            } else {
+                overrideNote.classList.add("hidden");
+            }
+        };
+
+        const renderSuggestions = () => {
+            if (!suggestions.length) {
+                suggestionList.innerHTML = '<li class="empty-state">Be the first to suggest a date!</li>';
+                return;
+            }
+
+            const sorted = [...suggestions].sort((a, b) => {
+                const scoreDiff = getScore(b) - getScore(a);
+                if (scoreDiff !== 0) {
+                    return scoreDiff;
+                }
+                return parseDateString(a.date) - parseDateString(b.date);
+            });
+
+            suggestionList.innerHTML = sorted
+                .map((item) => {
+                    const attendees = Array.from(ensureAttendees(item));
+                    const count = attendees.length;
+                    const detailsLine = item.details ? `<p>${item.details}</p>` : "";
+                    const availabilityLine = count
+                        ? `<p>${count} friend${count === 1 ? "" : "s"} can make it</p>`
+                        : `<p>Waiting on RSVPs</p>`;
+                    const countLabel = `${count} friend${count === 1 ? "" : "s"}`;
+
+                    return `
+                        <li class="suggestion-item" data-id="${item.id}">
+                            <div class="suggestion-info">
+                                <h3>${formatDate(item.date)}</h3>
+                                ${detailsLine}
+                                ${availabilityLine}
+                            </div>
+                            <div class="vote">
+                                <span class="vote-count">${countLabel}</span>
+                                <div class="vote-buttons">
+                                    <button data-action="attend" type="button">I'm in</button>
+                                    <button class="undo-btn" data-action="remove" type="button">Undo</button>
+                                </div>
+                            </div>
+                        </li>
+                    `;
+                })
+                .join("");
+        };
+
+        const buildSuggestionMap = () => {
+            const map = new Map();
+            suggestions.forEach((item) => {
+                map.set(item.date, item);
+            });
+            return map;
+        };
+
+        const syncMonthJump = () => {
+            const center = new Date(currentMonth);
+            const start = new Date(earliestMonth);
+            const distanceMonths =
+                (center.getFullYear() - start.getFullYear()) * 12 + (center.getMonth() - start.getMonth());
+            const total = Math.max(12, distanceMonths + 1);
+            const options = [];
+            for (let i = 0; i < total; i += 1) {
+                const optionDate = new Date(start.getFullYear(), start.getMonth() + i, 1);
+                const value = `${optionDate.getFullYear()}-${pad(optionDate.getMonth() + 1)}`;
+                const label = optionDate.toLocaleDateString(undefined, {
+                    month: "long",
+                    year: "numeric"
+                });
+                options.push({ value, label });
+            }
+            monthJump.innerHTML = options
+                .map(({ value, label }) => `<option value="${value}">${label}</option>`)
+                .join("");
+            const currentValue = `${center.getFullYear()}-${pad(center.getMonth() + 1)}`;
+            monthJump.value = currentValue;
+        };
+
+        const closeTooltip = () => {
+            calendarTooltip.classList.add("hidden");
+            tooltipDate = null;
+            tooltipButton = null;
+        };
+
+        const positionTooltip = () => {
+            if (!tooltipButton || calendarTooltip.classList.contains("hidden")) {
+                return;
+            }
+            const rect = tooltipButton.getBoundingClientRect();
+            const tooltipRect = calendarTooltip.getBoundingClientRect();
+            const preferredTop = window.scrollY + rect.top - tooltipRect.height - 12;
+            const belowTop = window.scrollY + rect.bottom + 12;
+            const fitsAbove = preferredTop > window.scrollY + 20;
+            const top = fitsAbove ? preferredTop : belowTop;
+            const centerLeft = window.scrollX + rect.left + rect.width / 2 - tooltipRect.width / 2;
+            const maxLeft = window.scrollX + document.documentElement.clientWidth - tooltipRect.width - 16;
+            const left = Math.max(window.scrollX + 16, Math.min(centerLeft, maxLeft));
+            calendarTooltip.style.top = `${top}px`;
+            calendarTooltip.style.left = `${left}px`;
+        };
+
+        const showTooltip = (button, iso, suggestion) => {
+            tooltipButton = button;
+            tooltipDate = iso;
+            const date = parseDateString(iso);
+            const attendees = suggestion ? Array.from(ensureAttendees(suggestion)) : [];
+            const userHasVote = suggestion ? ensureAttendees(suggestion).has(currentName) : false;
+            const header = `<p class="tooltip-day">${date.getDate()} &middot; ${date.toLocaleDateString(undefined, { month: "short" })}</p>`;
+            let body = "";
+            if (attendees.length) {
+                body = `<ul class="tooltip-list">${attendees.map((name) => `<li>${name}</li>`).join("")}</ul>`;
+            } else if (suggestion) {
+                body = '<p class="tooltip-empty">No votes yet. Be the first.</p>';
+            } else {
+                body = '<p class="tooltip-empty">No plan here yet. Use Add Date above to suggest it.</p>';
+            }
+
+            let actions = "";
+            if (suggestion) {
+                const voteDisabled = userHasVote;
+                const removeDisabled = !userHasVote;
+                actions = `
+                    <div class="tooltip-actions">
+                        <button class="btn primary" data-tooltip-action="add" data-tooltip-date="${iso}" ${voteDisabled ? "disabled" : ""}>Vote this date</button>
+                        <button class="btn ghost" data-tooltip-action="remove" data-tooltip-date="${iso}" ${removeDisabled ? "disabled" : ""}>Remove vote</button>
+                    </div>
+                `;
+            }
+
+            calendarTooltip.innerHTML = header + body + actions;
+            calendarTooltip.classList.remove("hidden");
+            positionTooltip();
+        };
+
+        const renderCalendar = () => {
+            closeTooltip();
+            const workingDate = new Date(currentMonth);
+            const year = workingDate.getFullYear();
+            const month = workingDate.getMonth();
+
+            syncMonthJump();
+
+            calendarMonthLabel.textContent = workingDate.toLocaleDateString(undefined, {
+                month: "long",
+                year: "numeric"
+            });
+
+            const startDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const suggestionMap = buildSuggestionMap();
+            const leadDate = manualOverrideDate || (getTopSuggestion()?.date ?? null);
+
+            const cells = dayNames.map((day) => `<div class="calendar-day-name">${day}</div>`);
+
+            for (let i = 0; i < startDay; i += 1) {
+                cells.push('<div class="calendar-day empty"></div>');
+            }
+
+            for (let day = 1; day <= daysInMonth; day += 1) {
+                const iso = `${year}-${pad(month + 1)}-${pad(day)}`;
+                const suggestion = suggestionMap.get(iso);
+                const isManual = manualOverrideDate === iso;
+                const isLead = !manualOverrideDate && leadDate === iso && suggestion;
+                const classes = ["calendar-day"];
+                if (suggestion) {
+                    classes.push("suggested");
+                }
+                if (isManual) {
+                    classes.push("manual");
+                } else if (isLead) {
+                    classes.push("lead");
+                }
+
+                const count = suggestion ? getScore(suggestion) : 0;
+                const voteTag = count
+                    ? `<span class="vote-tag">${count} friend${count === 1 ? "" : "s"}</span>`
+                    : "";
+
+                cells.push(`
+                    <button class="${classes.join(" ")}" data-date="${iso}" data-has-suggestion="${Boolean(suggestion)}" type="button">
+                        <span class="day-number">${day}</span>
+                        ${voteTag}
+                    </button>
+                `);
+            }
+
+            while (cells.length % 7 !== 0) {
+                cells.push('<div class="calendar-day empty"></div>');
+            }
+
+            calendarGrid.innerHTML = cells.join("");
+        };
+
+        const refreshUI = () => {
+            renderSuggestions();
+            renderCalendar();
+            updateFeaturedDate();
+        };
+
+        refreshUI();
+
+        nameForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const formData = new FormData(nameForm);
+            const name = (formData.get("attendee") || "").trim();
+            if (!name) {
+                return;
+            }
+            currentName = name;
+            nameForm.classList.add("hidden");
+            greetingMessage.textContent = `Hi, ${name}. What date works best for you?`;
+            greetingMessage.classList.remove("hidden");
+            planningBody.classList.add("active");
+        });
+
+        suggestionList.addEventListener("click", (event) => {
+            const action = event.target.dataset.action;
+            if (!action) {
+                return;
+            }
+
+            if (!currentName) {
+                alert("Add your name above the calendar first.");
+                return;
+            }
+
+            const parent = event.target.closest(".suggestion-item");
+            const id = Number(parent?.dataset.id);
+            const suggestion = suggestions.find((item) => item.id === id);
+            if (!suggestion) {
+                return;
+            }
+
+            if (action === "attend") {
+                addAttendee(suggestion, currentName);
+                refreshUI();
+            }
+
+            if (action === "remove") {
+                removeAttendee(suggestion, currentName);
+                refreshUI();
+            }
+        });
+
+        const renderContributions = () => {
+            if (!contributions.length) {
+                contributionsList.innerHTML =
+                    '<li class="suggestion-item contribution-item"><span>No dishes claimed yet. Add yours!</span></li>';
+                return;
+            }
+
+            contributionsList.innerHTML = contributions
+                .map(
+                    (item) => `
+                <li class="contribution-item" data-contribution-id="${item.id}">
+                    <div>
+                        <strong>${item.name}</strong>
+                        <div class="contribution-meta">
+                            <span>${item.dish}</span>
+                            <span>p. ${item.page}</span>
+                        </div>
+                    </div>
+                    <div class="contribution-actions">
+                        <button class="btn ghost" type="button" data-contribution-action="edit">Edit</button>
+                    </div>
+                </li>
+            `
+                )
+                .join("");
+        };
+
+        const resetContributionForm = () => {
+            editingContributionId = null;
+            contributionForm.reset();
+            contributionSubmit.textContent = "Add dish";
+            contributionCancel.classList.add("hidden");
+        };
+
+        const loadContributions = async () => {
+            try {
+                const response = await fetch("cookbook-contributions.json");
+                if (!response.ok) {
+                    throw new Error("request failed");
+                }
+                const data = await response.json();
+                contributions = Array.isArray(data) ? data : [...defaultContributions];
+            } catch {
+                contributions = [...defaultContributions];
+            }
+            contributionCounter = contributions.reduce((max, item) => Math.max(max, item.id), 0);
+            renderContributions();
+        };
+
+        loadContributions();
+
+        suggestionForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const formData = new FormData(suggestionForm);
+            const date = formData.get("date");
+            if (!date) {
+                return;
+            }
+
+            suggestions.push({
+                id: ++suggestionId,
+                date,
+                details: "",
+                attendees: new Set()
+            });
+
+            suggestionForm.reset();
+            refreshUI();
+        });
+
+        contributionForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const name = contributionName.value.trim();
+            const dish = contributionDish.value.trim();
+            const page = contributionPage.value.trim();
+
+            if (!name || !dish || !page) {
+                return;
+            }
+
+            if (editingContributionId) {
+                const target = contributions.find((item) => item.id === editingContributionId);
+                if (target) {
+                    target.name = name;
+                    target.dish = dish;
+                    target.page = page;
+                }
+            } else {
+                contributions.push({
+                    id: ++contributionCounter,
+                    name,
+                    dish,
+                    page
+                });
+            }
+
+            resetContributionForm();
+            renderContributions();
+        });
+
+        contributionCancel.addEventListener("click", () => {
+            resetContributionForm();
+        });
+
+        contributionsList.addEventListener("click", (event) => {
+            const action = event.target.dataset.contributionAction;
+            if (!action) {
+                return;
+            }
+            const parent = event.target.closest("[data-contribution-id]");
+            const id = Number(parent?.dataset.contributionId);
+            const target = contributions.find((item) => item.id === id);
+            if (!target) {
+                return;
+            }
+            if (action === "edit") {
+                editingContributionId = id;
+                contributionName.value = target.name;
+                contributionDish.value = target.dish;
+                contributionPage.value = target.page;
+                contributionSubmit.textContent = "Save dish";
+                contributionCancel.classList.remove("hidden");
+                contributionName.focus();
+            }
+        });
+
+        calendarTooltip.addEventListener("click", (event) => {
+            const action = event.target.dataset.tooltipAction;
+            const iso = event.target.dataset.tooltipDate;
+            if (!action || !iso) {
+                return;
+            }
+
+            if (!currentName) {
+                alert("Add your name above the calendar first.");
+                return;
+            }
+
+            const suggestion = suggestions.find((item) => item.date === iso);
+            if (!suggestion) {
+                return;
+            }
+
+            if (action === "add") {
+                addAttendee(suggestion, currentName);
+            }
+
+            if (action === "remove") {
+                removeAttendee(suggestion, currentName);
+            }
+
+            refreshUI();
+            const button = tooltipButton;
+            if (button) {
+                showTooltip(button, iso, suggestion);
+            }
+        });
+
+        document.addEventListener("click", (event) => {
+            const clickedButton = event.target.closest(".calendar-day");
+            if (clickedButton && planningBody.classList.contains("active")) {
+                const iso = clickedButton.dataset.date;
+                const suggestion = suggestions.find((item) => item.date === iso);
+                showTooltip(clickedButton, iso, suggestion);
+                return;
+            }
+
+            if (calendarTooltip.contains(event.target)) {
+                return;
+            }
+
+            if (tooltipButton && tooltipButton.contains(event.target)) {
+                return;
+            }
+
+            closeTooltip();
+        });
+
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
+                closeTooltip();
+            }
+        });
+
+        document.querySelectorAll("[data-calendar-nav]").forEach((button) => {
+            button.addEventListener("click", () => {
+                const action = button.dataset.calendarNav;
+                if (action === "prev") {
+                    const testDate = new Date(currentMonth);
+                    testDate.setMonth(testDate.getMonth() - 1, 1);
+                    if (testDate >= earliestMonth) {
+                        currentMonth.setMonth(currentMonth.getMonth() - 1);
+                        currentMonth.setDate(1);
+                    }
+                } else if (action === "next") {
+                    currentMonth.setMonth(currentMonth.getMonth() + 1);
+                    currentMonth.setDate(1);
+                } else if (action === "today") {
+                    const today = new Date();
+                    currentMonth.setFullYear(today.getFullYear(), today.getMonth(), 1);
+                }
+                renderCalendar();
+            });
+        });
+
+        monthJump.addEventListener("change", () => {
+            const value = monthJump.value;
+            if (!value) {
+                return;
+            }
+            const [year, month] = value.split("-").map(Number);
+            currentMonth.setFullYear(year, month - 1, 1);
+            renderCalendar();
+        });
+
+        window.addEventListener("resize", positionTooltip);
+        window.addEventListener("scroll", positionTooltip);
+
+        document.querySelectorAll(".upload input[type='file']").forEach((input) => {
+            const note = input.closest(".upload")?.querySelector(".upload-note");
+            const defaultText = note?.dataset.default;
+
+            input.addEventListener("change", () => {
+                if (!note) return;
+
+                if (input.files.length) {
+                    note.textContent = `${input.files.length} photo${input.files.length === 1 ? "" : "s"} ready to share`;
+                } else if (defaultText) {
+                    note.textContent = defaultText;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

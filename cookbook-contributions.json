@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "Mira",
+    "dish": "Citrus + fennel salad",
+    "page": "118"
+  },
+  {
+    "id": 2,
+    "name": "Jon",
+    "dish": "Buttermilk-brined roast",
+    "page": "132"
+  },
+  {
+    "id": 3,
+    "name": "Priya",
+    "dish": "Salted caramel pots",
+    "page": "210"
+  }
+]
