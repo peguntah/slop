@@ -616,10 +616,51 @@
             gap: 1rem;
         }
 
+        @media (max-width: 640px) {
+            .calendar-header {
+                flex-direction: column;
+                gap: 0.75rem;
+                align-items: stretch;
+            }
+
+            .calendar-header-title {
+                text-align: left;
+            }
+
+            .calendar-nav {
+                justify-content: space-between;
+            }
+
+            .calendar-grid {
+                grid-template-columns: repeat(7, minmax(32px, 1fr));
+                gap: 0.25rem;
+            }
+
+            .calendar-day {
+                padding: 0.5rem;
+                min-height: 60px;
+            }
+
+            .calendar-day .vote-tag {
+                font-size: 0.65rem;
+            }
+
+            .calendar-shell {
+                padding: 1.2rem;
+            }
+        }
+
         .availability-note {
             margin: 0.2rem 0 0.8rem;
             font-size: 0.9rem;
             color: rgba(45, 38, 31, 0.7);
+        }
+
+        .name-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
         }
 
         .name-form {
@@ -639,11 +680,31 @@
             padding: 0.75rem 1.4rem;
         }
 
+        .greeting-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
         .greeting-message {
             margin: 1rem 0 0;
             font-size: 1.1rem;
             font-weight: 600;
             color: var(--deep-sage);
+        }
+
+        .calendar-jump-btn {
+            height: 44px;
+            padding: 0 1rem;
+            font-size: 0.9rem;
+        }
+
+        .visually-hidden {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+            width: 0;
+            height: 0;
         }
 
         .planning-body {
@@ -954,7 +1015,20 @@
                 <div class="section-header">
                     <div>
                         <h2>Party Planning</h2>
-                        <p>We focus on one gathering at a time. Confirm the lead date below or submit another if it suits you better.</p>
+                        <p>Enter your name and pick a date that works for you.</p>
+                    </div>
+                </div>
+                <div class="name-panel">
+                    <form id="name-form" class="name-form">
+                        <label>
+                            <span>Who are you?</span>
+                            <input type="text" name="attendee" placeholder="e.g. Jamie" required>
+                        </label>
+                        <button class="btn primary" type="submit">Submit</button>
+                    </form>
+                    <div class="greeting-wrapper hidden" id="greeting-wrapper">
+                        <p id="planner-greeting" class="greeting-message"></p>
+                        <button class="btn ghost" type="button" id="edit-name">Edit name</button>
                     </div>
                 </div>
                 <div class="forecast">
@@ -973,14 +1047,6 @@
                         <p>Vote to confirm a night through the calendar or toss in new dates that work for you.</p>
                     </article>
                 </div>
-                <form id="name-form" class="name-form">
-                    <label>
-                        <span>Who are you?</span>
-                        <input type="text" name="attendee" placeholder="e.g. Jamie" required>
-                    </label>
-                    <button class="btn primary" type="submit">Submit</button>
-                </form>
-                <p id="planner-greeting" class="greeting-message hidden"></p>
                 <div id="planning-body" class="planning-body">
                     <form id="suggestion-form" class="suggestion-form">
                         <label>
@@ -993,7 +1059,7 @@
                         <div class="calendar-header">
                             <div class="calendar-nav">
                                 <button type="button" data-calendar-nav="prev">&#8249;</button>
-                                <select id="month-jump" class="month-select" aria-label="Jump to month"></select>
+                                <button type="button" class="btn ghost calendar-jump-btn" id="calendar-jump-button">Go to date</button>
                                 <button type="button" data-calendar-nav="next">&#8250;</button>
                             </div>
                             <div class="calendar-header-title">
@@ -1004,6 +1070,7 @@
                                 <button type="button" data-calendar-nav="today">Today</button>
                             </div>
                         </div>
+                        <input type="date" id="calendar-jump-input" class="visually-hidden">
                         <div class="calendar-grid" id="calendar-grid"></div>
                         <p class="calendar-legend">Soft green squares mark suggested dates. Clay highlights show the manual pick. Tap any suggested date to mark your availability.</p>
                     </div>
@@ -1095,13 +1162,16 @@
         const suggestionForm = document.getElementById("suggestion-form");
         const nameForm = document.getElementById("name-form");
         const greetingMessage = document.getElementById("planner-greeting");
+        const greetingWrapper = document.getElementById("greeting-wrapper");
+        const editNameButton = document.getElementById("edit-name");
         const planningBody = document.getElementById("planning-body");
         const featuredDateValue = document.getElementById("featured-date-value");
         const overrideNote = document.getElementById("override-note");
         const calendarGrid = document.getElementById("calendar-grid");
         const calendarMonthLabel = document.getElementById("calendar-month");
+        const calendarJumpInput = document.getElementById("calendar-jump-input");
+        const calendarJumpButton = document.getElementById("calendar-jump-button");
         const dateInput = suggestionForm.querySelector('input[name="date"]');
-        const monthJump = document.getElementById("month-jump");
         const contributionsList = document.getElementById("contributions-list");
         const contributionForm = document.getElementById("contribution-form");
         const contributionName = document.getElementById("contribution-name");
@@ -1162,6 +1232,17 @@
             return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
         })();
         dateInput.min = todayIso;
+        calendarJumpInput.min = todayIso;
+
+        const getMonthLabel = (date) => {
+            const isCompact = window.innerWidth <= 520;
+            return parseDateString(
+                `${date.getFullYear()}-${pad(date.getMonth() + 1)}-01`
+            ).toLocaleDateString(undefined, {
+                month: isCompact ? "short" : "long",
+                year: "numeric"
+            });
+        };
 
         const defaultContributions = [
             { id: 1, name: "Mira", dish: "Citrus + fennel salad", page: "118" },
@@ -1280,27 +1361,8 @@
             return map;
         };
 
-        const syncMonthJump = () => {
-            const center = new Date(currentMonth);
-            const start = new Date(earliestMonth);
-            const distanceMonths =
-                (center.getFullYear() - start.getFullYear()) * 12 + (center.getMonth() - start.getMonth());
-            const total = Math.max(12, distanceMonths + 1);
-            const options = [];
-            for (let i = 0; i < total; i += 1) {
-                const optionDate = new Date(start.getFullYear(), start.getMonth() + i, 1);
-                const value = `${optionDate.getFullYear()}-${pad(optionDate.getMonth() + 1)}`;
-                const label = optionDate.toLocaleDateString(undefined, {
-                    month: "long",
-                    year: "numeric"
-                });
-                options.push({ value, label });
-            }
-            monthJump.innerHTML = options
-                .map(({ value, label }) => `<option value="${value}">${label}</option>`)
-                .join("");
-            const currentValue = `${center.getFullYear()}-${pad(center.getMonth() + 1)}`;
-            monthJump.value = currentValue;
+        const updateMonthLabel = () => {
+            calendarMonthLabel.textContent = getMonthLabel(currentMonth);
         };
 
         const closeTooltip = () => {
@@ -1365,12 +1427,7 @@
             const year = workingDate.getFullYear();
             const month = workingDate.getMonth();
 
-            syncMonthJump();
-
-            calendarMonthLabel.textContent = workingDate.toLocaleDateString(undefined, {
-                month: "long",
-                year: "numeric"
-            });
+            updateMonthLabel();
 
             const startDay = new Date(year, month, 1).getDay();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -1436,8 +1493,18 @@
             currentName = name;
             nameForm.classList.add("hidden");
             greetingMessage.textContent = `Hi, ${name}. What date works best for you?`;
-            greetingMessage.classList.remove("hidden");
+            greetingWrapper.classList.remove("hidden");
+            editNameButton.classList.remove("hidden");
             planningBody.classList.add("active");
+        });
+
+        editNameButton.addEventListener("click", () => {
+            nameForm.classList.remove("hidden");
+            const input = nameForm.querySelector('input[name="attendee"]');
+            input.value = currentName;
+            input.focus();
+            greetingWrapper.classList.add("hidden");
+            editNameButton.classList.add("hidden");
         });
 
         suggestionList.addEventListener("click", (event) => {
@@ -1674,17 +1741,32 @@
             });
         });
 
-        monthJump.addEventListener("change", () => {
-            const value = monthJump.value;
+        calendarJumpButton.addEventListener("click", () => {
+            if (calendarJumpInput.showPicker) {
+                calendarJumpInput.showPicker();
+            } else {
+                calendarJumpInput.click();
+            }
+        });
+
+        calendarJumpInput.addEventListener("change", () => {
+            const value = calendarJumpInput.value;
             if (!value) {
                 return;
             }
-            const [year, month] = value.split("-").map(Number);
-            currentMonth.setFullYear(year, month - 1, 1);
+            const [year, month, day] = value.split("-").map(Number);
+            const target = new Date(year, month - 1, day || 1);
+            if (target < earliestMonth) {
+                return;
+            }
+            currentMonth.setFullYear(target.getFullYear(), target.getMonth(), 1);
             renderCalendar();
         });
 
-        window.addEventListener("resize", positionTooltip);
+        window.addEventListener("resize", () => {
+            positionTooltip();
+            updateMonthLabel();
+        });
         window.addEventListener("scroll", positionTooltip);
 
         document.querySelectorAll(".upload input[type='file']").forEach((input) => {
