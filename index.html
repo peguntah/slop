@@ -998,6 +998,8 @@
         .shelf-scroll {
             width: 100%;
             padding: 0 1.5rem;
+            opacity: 0;
+            transition: opacity 150ms ease;
         }
 
         .shelf-scroll-track {
@@ -1030,6 +1032,11 @@
         .shelf-scroll-thumb:active {
             cursor: grabbing;
             background: rgba(95, 111, 99, 0.85);
+        }
+
+        .bookshelf:hover .shelf-scroll,
+        .bookshelf:focus-within .shelf-scroll {
+            opacity: 1;
         }
 
         .shelf-track {
