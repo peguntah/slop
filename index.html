@@ -29,7 +29,7 @@
             background: radial-gradient(circle at top, #f9f6f1 0%, #e8e2d4 35%, #d9cfbf 70%, #cbbda8 100%);
             position: relative;
             overflow-x: hidden;
-            padding: 3rem 0;
+            padding: clamp(1.5rem, 4vw, 3rem) 0;
         }
 
         body::before,
@@ -59,9 +59,9 @@
             display: flex;
             gap: 2rem;
             max-width: 1200px;
-            width: calc(100% - 2rem);
+            width: 100%;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 0 clamp(1rem, 3vw, 2rem);
         }
 
         .glass {
@@ -163,6 +163,8 @@
 
         .panel {
             padding: 2rem;
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
         .hero {
@@ -375,6 +377,8 @@
             border-radius: 24px;
             background: rgba(255, 255, 255, 0.55);
             border: 1px solid rgba(255, 255, 255, 0.35);
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .calendar-header {
@@ -566,6 +570,47 @@
             margin-top: 0;
         }
 
+        .proposed-date-input {
+            position: relative;
+            border-radius: 16px;
+            border: 1px solid rgba(91, 100, 91, 0.25);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .proposed-date-input input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: none;
+            background: transparent;
+            margin: 0;
+            min-height: auto;
+            font: inherit;
+            color: transparent;
+            appearance: none;
+        }
+
+        .proposed-date-input input:focus,
+        .proposed-date-input input.has-value {
+            color: var(--text);
+        }
+
+        .proposed-date-input input:focus-visible {
+            outline: none;
+        }
+
+        .proposed-date-input input::-webkit-datetime-edit {
+            color: inherit;
+        }
+
+        .proposed-date-input input::-webkit-calendar-picker-indicator {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            opacity: 0.7;
+        }
+
         textarea {
             min-height: 80px;
             resize: vertical;
@@ -685,9 +730,17 @@
                 padding: 0 1rem;
             }
 
+            .sidebar {
+                padding: 1.5rem 1.25rem;
+            }
+
             .calendar-shell {
                 padding: 1rem;
                 margin: 0;
+            }
+
+            .panel {
+                padding: 1.5rem;
             }
         }
 
@@ -725,15 +778,7 @@
             width: 100%;
         }
 
-        .date-input {
-            position: relative;
-        }
-
-        .date-input input {
-            width: 100%;
-        }
-
-        .date-placeholder {
+        .proposed-date-placeholder {
             position: absolute;
             left: 1rem;
             top: 50%;
@@ -744,8 +789,8 @@
             transition: opacity 150ms ease;
         }
 
-        .date-input.filled .date-placeholder,
-        .date-input:focus-within .date-placeholder {
+        .proposed-date-input.filled .proposed-date-placeholder,
+        .proposed-date-input:focus-within .proposed-date-placeholder {
             opacity: 0;
         }
 
@@ -761,12 +806,6 @@
             font-size: 1rem;
             font-weight: 600;
             color: var(--deep-sage);
-        }
-
-        .calendar-jump-btn {
-            height: 44px;
-            padding: 0 1rem;
-            font-size: 0.9rem;
         }
 
         .calendar-jump {
@@ -1154,9 +1193,9 @@
                     <form id="suggestion-form" class="suggestion-form">
                         <label class="date-label">
                             <span>Proposed date</span>
-                            <div class="date-input proposed-date-input">
+                            <div class="proposed-date-input">
                                 <input type="date" name="date" required>
-                                <span class="date-placeholder">Select a date</span>
+                                <span class="proposed-date-placeholder">Select a date</span>
                             </div>
                         </label>
                         <button class="btn primary" type="submit">Add Date</button>
@@ -1349,8 +1388,10 @@
             if (!proposedDateWrapper) return;
             if (dateInput.value) {
                 proposedDateWrapper.classList.add("filled");
+                dateInput.classList.add("has-value");
             } else {
                 proposedDateWrapper.classList.remove("filled");
+                dateInput.classList.remove("has-value");
             }
         };
 
