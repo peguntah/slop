@@ -59,6 +59,7 @@
             display: flex;
             gap: 2rem;
             max-width: 1200px;
+            width: calc(100% - 2rem);
             margin: 0 auto;
             padding: 0 2rem;
         }
@@ -541,15 +542,6 @@
             color: rgba(45, 38, 31, 0.6);
         }
 
-        .input-hint {
-            display: block;
-            font-size: 0.7rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: rgba(45, 38, 31, 0.45);
-            margin: 0.2rem 0 0.4rem;
-        }
-
         .suggestion-form label {
             display: flex;
             flex-direction: column;
@@ -587,6 +579,8 @@
             grid-template-columns: minmax(220px, 3fr) minmax(150px, 1fr);
             align-items: end;
             max-width: 560px;
+            width: 100%;
+            margin: 0 auto 1.5rem;
         }
 
         .suggestion-form button[type="submit"] {
@@ -609,6 +603,7 @@
         @media (max-width: 540px) {
             .suggestion-form {
                 grid-template-columns: 1fr;
+                margin: 0 auto 1.5rem;
             }
 
             .suggestion-form button[type="submit"] {
@@ -680,6 +675,22 @@
             }
         }
 
+        @media (max-width: 720px) {
+            body {
+                padding: 2rem 0;
+            }
+
+            .page {
+                width: 100%;
+                padding: 0 1rem;
+            }
+
+            .calendar-shell {
+                padding: 1rem;
+                margin: 0;
+            }
+        }
+
         .availability-note {
             margin: 0.2rem 0 0.8rem;
             font-size: 0.9rem;
@@ -689,7 +700,7 @@
         .name-panel {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.25rem;
             margin-bottom: 1rem;
         }
 
@@ -710,16 +721,44 @@
             padding: 0.75rem 1.4rem;
         }
 
+        .date-label {
+            width: 100%;
+        }
+
+        .date-input {
+            position: relative;
+        }
+
+        .date-input input {
+            width: 100%;
+        }
+
+        .date-placeholder {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.9rem;
+            color: rgba(45, 38, 31, 0.45);
+            pointer-events: none;
+            transition: opacity 150ms ease;
+        }
+
+        .date-input.filled .date-placeholder,
+        .date-input:focus-within .date-placeholder {
+            opacity: 0;
+        }
+
         .greeting-wrapper {
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            margin-top: 0.8rem;
+            margin-top: 0.2rem;
         }
 
         .greeting-message {
-            margin: 1rem 0 0;
-            font-size: 1.1rem;
+            margin: 0;
+            font-size: 1rem;
             font-weight: 600;
             color: var(--deep-sage);
         }
@@ -733,8 +772,8 @@
         .calendar-jump {
             border: 1px solid rgba(95, 111, 99, 0.3);
             border-radius: 16px;
-            background: rgba(255, 255, 255, 0.85);
-            min-width: 120px;
+            background: rgba(255, 255, 255, 0.9);
+            min-width: 130px;
             height: 42px;
             padding: 0 1rem;
             display: inline-flex;
@@ -743,6 +782,7 @@
             font-weight: 600;
             color: var(--deep-sage);
             position: relative;
+            cursor: pointer;
         }
 
         .calendar-jump input {
@@ -1089,17 +1129,15 @@
                         </ul>
                         <small class="override-note hidden" id="override-note">Manual override active</small>
                     </article>
-                    <article class="forecast-card glass">
-                        <span class="location-pill">Location: Tawny's yard</span>
-                        <p>Vote to confirm a night through the calendar or toss in new dates that work for you.</p>
-                    </article>
                 </div>
                 <div id="planning-body" class="planning-body">
                     <form id="suggestion-form" class="suggestion-form">
-                        <label>
+                        <label class="date-label">
                             <span>Proposed date</span>
-                            <small class="input-hint">mm/dd/yyyy</small>
-                            <input type="date" name="date" required>
+                            <div class="date-input proposed-date-input">
+                                <input type="date" name="date" required>
+                                <span class="date-placeholder">Select a date</span>
+                            </div>
                         </label>
                         <button class="btn primary" type="submit">Add Date</button>
                     </form>
@@ -1116,9 +1154,6 @@
                             <div class="calendar-header-title">
                                 <span>Browse months</span>
                                 <h3 id="calendar-month"></h3>
-                            </div>
-                            <div class="calendar-nav">
-                                <button type="button" data-calendar-nav="today">Today</button>
                             </div>
                         </div>
                         <div class="calendar-grid" id="calendar-grid"></div>
@@ -1221,7 +1256,9 @@
         const calendarMonthLabel = document.getElementById("calendar-month");
         const calendarJumpInput = document.getElementById("calendar-jump-input");
         const calendarJumpLabel = document.getElementById("calendar-jump-label");
+        const calendarJump = document.getElementById("calendar-jump");
         const dateInput = suggestionForm.querySelector('input[name="date"]');
+        const proposedDateWrapper = document.querySelector(".proposed-date-input");
         const contributionsList = document.getElementById("contributions-list");
         const contributionForm = document.getElementById("contribution-form");
         const contributionName = document.getElementById("contribution-name");
@@ -1283,6 +1320,19 @@
         })();
         dateInput.min = todayIso;
         calendarJumpInput.min = todayIso;
+
+        const updateProposedDateState = () => {
+            if (!proposedDateWrapper) return;
+            if (dateInput.value) {
+                proposedDateWrapper.classList.add("filled");
+            } else {
+                proposedDateWrapper.classList.remove("filled");
+            }
+        };
+
+        updateProposedDateState();
+        dateInput.addEventListener("change", updateProposedDateState);
+        dateInput.addEventListener("input", updateProposedDateState);
 
         const setCalendarJumpLabel = () => {
             if (calendarJumpInput.value) {
@@ -1390,18 +1440,13 @@
                 .map((item) => {
                     const attendees = Array.from(ensureAttendees(item));
                     const count = attendees.length;
-                    const detailsLine = item.details ? `<p>${item.details}</p>` : "";
-                    const availabilityLine = count
-                        ? `<p>${count} friend${count === 1 ? "" : "s"} can make it</p>`
-                        : `<p>Waiting on RSVPs</p>`;
                     const countLabel = `${count} friend${count === 1 ? "" : "s"}`;
 
                     return `
                         <li class="suggestion-item" data-id="${item.id}">
                             <div class="suggestion-info">
-                                <h3>${formatDate(item.date)}</h3>
-                                ${detailsLine}
-                                ${availabilityLine}
+                                <h3>${formatDate(item.date, { weekday: "short", month: "short", day: "numeric", year: "numeric" })}</h3>
+                                <p>${countLabel}</p>
                             </div>
                             <div class="vote">
                                 <span class="vote-count">${countLabel}</span>
@@ -1666,6 +1711,7 @@
             });
 
             suggestionForm.reset();
+            updateProposedDateState();
             refreshUI();
         });
 
@@ -1802,6 +1848,14 @@
                 }
                 renderCalendar();
             });
+        });
+
+        calendarJump.addEventListener("click", () => {
+            if (calendarJumpInput.showPicker) {
+                calendarJumpInput.showPicker();
+            } else {
+                calendarJumpInput.click();
+            }
         });
 
         calendarJumpInput.addEventListener("change", () => {
