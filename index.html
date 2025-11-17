@@ -887,6 +887,22 @@
             align-items: center;
         }
 
+        .contribution-controls {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.75rem;
+        }
+
+        .contribution-list {
+            list-style: none;
+            margin: 1rem 0 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
         .suggestion-item {
             display: flex;
             flex-wrap: wrap;
@@ -1078,7 +1094,11 @@
                             <h2>Who's cooking what?</h2>
                         </div>
                     </div>
-                    <form id="contribution-form" class="name-form">
+                    <div class="contribution-controls">
+                        <button class="btn primary" type="button" id="toggle-contribution-form">Add dish</button>
+                        <button class="btn ghost" type="button" id="toggle-contribution-edit">Edit list</button>
+                    </div>
+                    <form id="contribution-form" class="name-form hidden">
                         <label>
                             <span>Name</span>
                             <input type="text" id="contribution-name" placeholder="e.g. Jamie" required>
@@ -1091,10 +1111,10 @@
                             <span>Page #</span>
                             <input type="text" id="contribution-page" placeholder="e.g. 126" required>
                         </label>
-                        <button class="btn primary" type="submit" id="contribution-submit">Add dish</button>
+                        <button class="btn primary" type="submit" id="contribution-submit">Save dish</button>
                         <button class="btn ghost hidden" type="button" id="contribution-cancel">Cancel edit</button>
                     </form>
-                    <ul id="contributions-list" class="suggestion-list"></ul>
+                    <ul id="contributions-list" class="contribution-list"></ul>
                 </div>
             </section>
 
@@ -1145,7 +1165,7 @@
                         <div class="calendar-header">
                             <div class="calendar-nav">
                                 <button type="button" data-calendar-nav="prev">&#8249;</button>
-                                <div class="calendar-jump" id="calendar-jump">
+                                <div class="calendar-jump" id="calendar-jump" role="button" tabindex="0">
                                     <span id="calendar-jump-label">Go to date</span>
                                     <input type="date" id="calendar-jump-input" aria-label="Jump to date">
                                 </div>
@@ -1266,6 +1286,8 @@
         const contributionPage = document.getElementById("contribution-page");
         const contributionSubmit = document.getElementById("contribution-submit");
         const contributionCancel = document.getElementById("contribution-cancel");
+        const contributionFormToggle = document.getElementById("toggle-contribution-form");
+        const contributionEditToggle = document.getElementById("toggle-contribution-edit");
 
         const suggestions = [
             {
@@ -1286,6 +1308,8 @@
         let contributions = [];
         let contributionCounter = 0;
         let editingContributionId = null;
+        let contributionFormOpen = false;
+        let contributionsEditing = false;
         let currentName = "";
         const manualOverrideDate = null; // Set to "YYYY-MM-DD" to pin a date manually.
         const currentMonth = new Date();
@@ -1336,9 +1360,11 @@
 
         const setCalendarJumpLabel = () => {
             if (calendarJumpInput.value) {
-                calendarJumpLabel.textContent = formatDate(calendarJumpInput.value, {
+                const jumpDate = parseDateString(calendarJumpInput.value);
+                calendarJumpLabel.textContent = jumpDate.toLocaleDateString(undefined, {
                     month: "short",
-                    day: "numeric"
+                    day: "numeric",
+                    year: "numeric"
                 });
             } else {
                 calendarJumpLabel.textContent = "Go to date";
@@ -1647,7 +1673,7 @@
         const renderContributions = () => {
             if (!contributions.length) {
                 contributionsList.innerHTML =
-                    '<li class="suggestion-item contribution-item"><span>No dishes claimed yet. Add yours!</span></li>';
+                    '<li class="contribution-item"><span>No dishes claimed yet. Add yours!</span></li>';
                 return;
             }
 
@@ -1663,7 +1689,11 @@
                         </div>
                     </div>
                     <div class="contribution-actions">
-                        <button class="btn ghost" type="button" data-contribution-action="edit">Edit</button>
+                        ${
+                            contributionsEditing
+                                ? '<button class="btn ghost" type="button" data-contribution-action="edit">Edit</button>'
+                                : ""
+                        }
                     </div>
                 </li>
             `
@@ -1674,7 +1704,7 @@
         const resetContributionForm = () => {
             editingContributionId = null;
             contributionForm.reset();
-            contributionSubmit.textContent = "Add dish";
+            contributionSubmit.textContent = "Save dish";
             contributionCancel.classList.add("hidden");
         };
 
@@ -1694,6 +1724,42 @@
         };
 
         loadContributions();
+
+        const toggleContributionForm = (forceClose = false) => {
+            if (forceClose) {
+                contributionForm.classList.add("hidden");
+                contributionFormToggle.textContent = "Add dish";
+                contributionFormOpen = false;
+                return;
+            }
+
+            contributionFormOpen = !contributionFormOpen;
+            contributionForm.classList.toggle("hidden", !contributionFormOpen);
+            contributionFormToggle.textContent = contributionFormOpen ? "Cancel" : "Add dish";
+            if (contributionFormOpen) {
+                contributionName.focus();
+            } else {
+                resetContributionForm();
+            }
+        };
+
+        const toggleContributionEditing = () => {
+            contributionsEditing = !contributionsEditing;
+            contributionEditToggle.textContent = contributionsEditing ? "Done editing" : "Edit list";
+            if (!contributionsEditing && editingContributionId) {
+                resetContributionForm();
+                toggleContributionForm(true);
+            }
+            renderContributions();
+        };
+
+        contributionFormToggle.addEventListener("click", () => {
+            toggleContributionForm();
+        });
+
+        contributionEditToggle.addEventListener("click", () => {
+            toggleContributionEditing();
+        });
 
         suggestionForm.addEventListener("submit", (event) => {
             event.preventDefault();
@@ -1742,16 +1808,21 @@
             }
 
             resetContributionForm();
+            toggleContributionForm(true);
             renderContributions();
         });
 
         contributionCancel.addEventListener("click", () => {
             resetContributionForm();
+            toggleContributionForm(true);
         });
 
         contributionsList.addEventListener("click", (event) => {
             const action = event.target.dataset.contributionAction;
             if (!action) {
+                return;
+            }
+            if (!contributionsEditing) {
                 return;
             }
             const parent = event.target.closest("[data-contribution-id]");
@@ -1767,6 +1838,9 @@
                 contributionPage.value = target.page;
                 contributionSubmit.textContent = "Save dish";
                 contributionCancel.classList.remove("hidden");
+                contributionForm.classList.remove("hidden");
+                contributionFormToggle.textContent = "Cancel";
+                contributionFormOpen = true;
                 contributionName.focus();
             }
         });
@@ -1855,6 +1929,17 @@
                 calendarJumpInput.showPicker();
             } else {
                 calendarJumpInput.click();
+            }
+        });
+
+        calendarJump.addEventListener("keydown", (event) => {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                if (calendarJumpInput.showPicker) {
+                    calendarJumpInput.showPicker();
+                } else {
+                    calendarJumpInput.click();
+                }
             }
         });
 
