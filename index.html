@@ -47,12 +47,13 @@
         body::before,
         body::after {
             content: "";
-            position: absolute;
+            position: fixed;
             width: clamp(260px, 70vw, 520px);
             height: clamp(260px, 70vw, 520px);
             background: radial-gradient(circle, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0));
             filter: blur(2px);
             z-index: 0;
+            pointer-events: none;
         }
 
         body::before {
