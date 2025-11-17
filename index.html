@@ -184,6 +184,12 @@
             gap: 2rem;
         }
 
+        .hero.hero-sidebar {
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+            padding: 1.75rem;
+        }
+
         .eyebrow {
             text-transform: uppercase;
             letter-spacing: 0.2em;
@@ -260,6 +266,35 @@
             font-weight: 700;
             color: var(--deep-sage);
             margin: 0;
+        }
+
+        .cookbook-title a {
+            color: inherit;
+            text-decoration: none;
+            border-bottom: 2px solid rgba(76, 91, 79, 0.3);
+            padding-bottom: 0.1rem;
+        }
+
+        .cookbook-title a:hover {
+            border-color: rgba(76, 91, 79, 0.6);
+        }
+
+        .cookbook-link {
+            margin: 0.1rem 0 0;
+            font-size: 0.95rem;
+            color: rgba(45, 38, 31, 0.75);
+        }
+
+        .cookbook-link a {
+            color: var(--deep-sage);
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(76, 91, 79, 0.3);
+            padding-bottom: 0.05rem;
+        }
+
+        .cookbook-link a:hover {
+            border-color: rgba(76, 91, 79, 0.6);
         }
 
         .hero-list {
@@ -675,6 +710,15 @@
             .panel {
                 padding: 1.5rem;
             }
+
+            .bookshelf-wrapper {
+                margin: 1.25rem -1rem 0;
+                width: calc(100% + 2rem);
+            }
+
+            .shelf-track {
+                padding: 0.75rem 1rem 0.25rem;
+            }
         }
 
         .availability-note {
@@ -703,8 +747,16 @@
             flex: 1 1 240px;
         }
 
+        .name-form input[type="text"] {
+            height: 52px;
+            padding: 0 1rem;
+        }
+
         .name-form button {
-            padding: 0.75rem 1.4rem;
+            min-height: 52px;
+            padding: 0 1.4rem;
+            display: inline-flex;
+            align-items: center;
         }
 
         .greeting-wrapper {
@@ -843,7 +895,7 @@
             display: flex;
             gap: 0.75rem;
             flex-wrap: wrap;
-            margin-bottom: 0.75rem;
+            margin-top: 1rem;
         }
 
         .contribution-list {
@@ -902,6 +954,161 @@
             text-align: center;
             padding: 1.5rem;
             color: rgba(45, 38, 31, 0.6);
+        }
+
+        .bookshelf-wrapper {
+            position: relative;
+            margin-top: 1.25rem;
+            width: 100%;
+        }
+
+        .bookshelf {
+            position: relative;
+            border-radius: 28px;
+            padding: 1.25rem 2rem 2rem;
+            background: rgba(255, 255, 255, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            overflow: hidden;
+        }
+
+        .bookshelf::before,
+        .bookshelf::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 80px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .bookshelf::before {
+            left: 0;
+            background: linear-gradient(90deg, rgba(243, 238, 228, 0.9), rgba(243, 238, 228, 0));
+        }
+
+        .bookshelf::after {
+            right: 0;
+            background: linear-gradient(270deg, rgba(243, 238, 228, 0.9), rgba(243, 238, 228, 0));
+        }
+
+        .shelf-scroll {
+            width: 100%;
+            padding: 0 1.5rem;
+        }
+
+        .shelf-scroll-track {
+            position: relative;
+            height: 4px;
+            border-radius: 999px;
+            background: rgba(95, 111, 99, 0.2);
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .shelf-scroll-track.disabled {
+            opacity: 0.35;
+            cursor: default;
+        }
+
+        .shelf-scroll-thumb {
+            position: absolute;
+            top: -4px;
+            bottom: -4px;
+            left: 0;
+            min-width: 36px;
+            border-radius: 999px;
+            background: rgba(95, 111, 99, 0.65);
+            box-shadow: 0 2px 8px rgba(45, 38, 31, 0.2);
+            cursor: grab;
+            transition: background 150ms ease;
+        }
+
+        .shelf-scroll-thumb:active {
+            cursor: grabbing;
+            background: rgba(95, 111, 99, 0.85);
+        }
+
+        .shelf-track {
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-end;
+            overflow-x: auto;
+            overflow-y: visible;
+            padding: 0.5rem 1.75rem 0.2rem;
+            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.65);
+            scrollbar-width: none;
+        }
+
+        .shelf-track::-webkit-scrollbar {
+            display: none;
+        }
+
+        .book {
+            width: 48px;
+            height: 176px;
+            border-radius: 8px;
+            background: linear-gradient(160deg, rgba(95, 111, 99, 0.4), rgba(148, 128, 108, 0.55));
+            border: 1px solid rgba(45, 38, 31, 0.15);
+            box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            transform: perspective(600px) rotateY(-7deg);
+            text-decoration: none;
+        }
+
+        .book span {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            text-align: center;
+            font-size: 0.78rem;
+            line-height: 1.8;
+        }
+
+        .book:nth-child(2n) {
+            background: linear-gradient(150deg, rgba(107, 83, 90, 0.45), rgba(158, 122, 129, 0.55));
+        }
+
+        .book:nth-child(3n) {
+            background: linear-gradient(150deg, rgba(78, 92, 86, 0.45), rgba(138, 163, 144, 0.55));
+        }
+
+        .book.placeholder {
+            opacity: 0.25;
+            filter: grayscale(0.1);
+            border-style: dashed;
+            pointer-events: none;
+        }
+
+        .shelf-base {
+            position: absolute;
+            left: 2.5rem;
+            right: 2.5rem;
+            bottom: 0.7rem;
+            height: 15px;
+            border-radius: 14px;
+            background: linear-gradient(180deg, rgba(221, 210, 196, 0.9), rgba(189, 173, 154, 0.9));
+            border: 1px solid rgba(187, 173, 156, 0.75);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.85),
+                0 10px 24px rgba(45, 38, 31, 0.18);
+            pointer-events: none;
+        }
+
+        .shelf-note {
+            margin: 1rem 0 0;
+            text-align: center;
+            font-size: 0.85rem;
+            color: rgba(45, 38, 31, 0.65);
         }
 
         .event-grid {
@@ -1018,15 +1225,17 @@
 <body>
     <div class="page">
         <aside class="sidebar">
-            <div class="sidebar-pane panel glass brand">
-                <p class="label">IT'S GIVING POTLUCK</p>
-                <h2>Cook Buck Club</h2>
-                <p>A loose excuse to hang out with family and close friends.</p>
-            </div>
-            <div class="sidebar-pane panel glass">
-                <h3>What is it?</h3>
-                <p>A potluck-style gathering where every guest brings a dish from one shared cookbook.</p>
-                <p>Use the calendar below to pick a date you're able to attend. </p>
+            <div class="sidebar-pane panel glass hero hero-sidebar">
+                <div class="hero-card brand">
+                    <p class="label">IT'S GIVING POTLUCK</p>
+                    <h2>Cook Buck Club</h2>
+                    <p>A loose excuse to hang out with family and close friends.</p>
+                </div>
+                <div class="hero-card">
+                    <h2>What is it?</h2>
+                    <p>A potluck-style gathering where every guest brings a dish from one shared cookbook.</p>
+                    <p>Use the calendar below to pick a date you're able to attend. </p>
+                </div>
             </div>
         </aside>
 
@@ -1035,7 +1244,14 @@
                 <div class="hero-card glass" style="grid-column: 1 / -1;">
                     <p class="eyebrow">Upcoming cookbook</p>
                     <h1>Salt, Fat, Acid, Heat</h1>
-                    <p class="cookbook-title">Host: Tawny</p>
+                    <p class="cookbook-title">
+                        <a href="https://www.amazon.com/s?k=salt+fat+acid+heat+cookbook&adgrpid=192017047408&hvadid=779670824312&hvdev=c&hvexpln=0&hvlocphy=9198937&hvnetw=g&hvocijid=1301253900372127260--&hvqmt=e&hvrand=1301253900372127260&hvtargid=kwd-325948234444&hydadcr=4853_13513634_29928&mcid=dd78c11b84853be7b4942ebf1c2a5e82&tag=googhydr-20&ref=pd_sl_5e9hsd7z4u_e" target="_blank" rel="noopener noreferrer">
+                            Shop “Salt, Fat, Acid, Heat” on Amazon
+                        </a>
+                    </p>
+                    <p class="cookbook-link">
+                        or <a href="https://griersmusings.wordpress.com/wp-content/uploads/2020/06/salt-fat-acid-heat.pdf" target="_blank" rel="noopener noreferrer">view the full cookbook PDF</a>
+                    </p>
                     <p>A loose excuse to hang out with family and close friends. Add what you want to cook below.</p>
                 </div>
                 <div class="panel glass" style="grid-column: 1 / -1;">
@@ -1044,10 +1260,6 @@
                             <p class="eyebrow">Potluck check-in</p>
                             <h2>Who's cooking what?</h2>
                         </div>
-                    </div>
-                    <div class="contribution-controls">
-                        <button class="btn primary" type="button" id="toggle-contribution-form">Add dish</button>
-                        <button class="btn ghost" type="button" id="toggle-contribution-edit">Edit list</button>
                     </div>
                     <form id="contribution-form" class="name-form hidden">
                         <label>
@@ -1066,6 +1278,10 @@
                         <button class="btn ghost hidden" type="button" id="contribution-cancel">Cancel edit</button>
                     </form>
                     <ul id="contributions-list" class="contribution-list"></ul>
+                    <div class="contribution-controls">
+                        <button class="btn primary" type="button" id="toggle-contribution-form">Add dish</button>
+                        <button class="btn ghost" type="button" id="toggle-contribution-edit">Edit list</button>
+                    </div>
                 </div>
             </section>
 
@@ -1092,9 +1308,9 @@
                 <div class="forecast">
                     <article class="forecast-card glass">
                         <p class="eyebrow">Party planning</p>
-                        <h3>Loose plans</h3>
+                        <h3>1st Cook Buck Club Gathering</h3>
                         <ul class="forecast-meta">
-                            <li><strong>Date on deck</strong><span id="featured-date-value">Date TBD</span></li>
+                            <li><strong>Tentative Date</strong><span id="featured-date-value">Date TBD</span></li>
                             <li><strong>Gathering time</strong><span>7:00 PM-ish</span></li>
                             <li><strong>City</strong><span>Woodburn, OR</span></li>
                         </ul>
@@ -1130,75 +1346,24 @@
                 <div class="section-header">
                     <div>
                         <p class="eyebrow">Recap vault</p>
-                        <h2>Past Event Menu Pages</h2>
-                        <p>Every gathering gets a simple post to log the cookbook, menu lineup, page numbers, and shared photos.</p>
+                        <h2>Past Gatherings</h2>
+                        <p>Each gathering is saved as a book. View the menu and see photos from the event.</p>
                     </div>
-                    <button class="btn ghost" type="button">Start a new recap</button>
                 </div>
-                <div class="event-grid">
-                    <article class="event-card glass" id="event-1">
-                        <header>
-                            <p class="event-date">May 12, 2024</p>
-                            <h3>Fireside Mezze</h3>
-                            <p class="event-cookbook"><strong>"Jerusalem"</strong> &middot; Yotam Ottolenghi &middot; Pages 44-71 &middot; Grains &amp; spreads</p>
-                        </header>
-                        <ul class="menu-list">
-                            <li><strong>Marcos</strong><span>Charred Eggplant Dip &middot; p. 52</span></li>
-                            <li><strong>Tasha</strong><span>Sumac Chicken Skewers &middot; p. 63</span></li>
-                            <li><strong>Priya</strong><span>Sesame Orange Salad &middot; p. 68</span></li>
-                        </ul>
-                        <div class="event-actions">
-                            <button class="btn ghost" type="button">Open recap page</button>
+                <div class="bookshelf-wrapper">
+                    <div class="bookshelf">
+                        <div class="shelf-scroll" aria-hidden="true">
+                            <div class="shelf-scroll-track">
+                                <div class="shelf-scroll-thumb"></div>
+                            </div>
                         </div>
-                        <label class="upload glass">
-                            <input type="file" accept="image/*" multiple>
-                            <span class="upload-text">Drop or tap to add photos</span>
-                            <small class="upload-note" data-default="We'll only share within the club.">We'll only share within the club.</small>
-                        </label>
-                    </article>
-
-                    <article class="event-card glass" id="event-2">
-                        <header>
-                            <p class="event-date">March 30, 2024</p>
-                            <h3>Coastal Comforts</h3>
-                            <p class="event-cookbook"><strong>"Salt, Fat, Acid, Heat"</strong> &middot; Samin Nosrat &middot; Pages 118-141 &middot; Bright citrus</p>
-                        </header>
-                        <ul class="menu-list">
-                            <li><strong>Jon</strong><span>Buttermilk Brined Roast &middot; p. 127</span></li>
-                            <li><strong>Elaine</strong><span>Herby Citrus Salad &middot; p. 134</span></li>
-                            <li><strong>Ruth</strong><span>Miso Citrus Cod &middot; p. 140</span></li>
-                        </ul>
-                        <div class="event-actions">
-                            <button class="btn ghost" type="button">Open recap page</button>
+                        <div class="shelf-track" aria-live="polite">
+                            <a class="book placeholder" href="#" aria-disabled="true"><span>Salt, Fat, Acid, Heat</span></a>
                         </div>
-                        <label class="upload glass">
-                            <input type="file" accept="image/*" multiple>
-                            <span class="upload-text">Add a gallery moment</span>
-                            <small class="upload-note" data-default="Upload up to 10 images per event.">Upload up to 10 images per event.</small>
-                        </label>
-                    </article>
-
-                    <article class="event-card glass" id="event-3">
-                        <header>
-                            <p class="event-date">February 10, 2024</p>
-                            <h3>Harvest Potluck</h3>
-                            <p class="event-cookbook"><strong>"Six Seasons"</strong> &middot; Joshua McFadden &middot; Pages 216-243 &middot; Winter roots</p>
-                        </header>
-                        <ul class="menu-list">
-                            <li><strong>Jess</strong><span>Roasted Carrot Tangle &middot; p. 222</span></li>
-                            <li><strong>Leo</strong><span>Farro &amp; Fennel Bake &middot; p. 230</span></li>
-                            <li><strong>Ami</strong><span>Chocolate Rye Tart &middot; p. 241</span></li>
-                        </ul>
-                        <div class="event-actions">
-                            <button class="btn ghost" type="button">Open recap page</button>
-                        </div>
-                        <label class="upload glass">
-                            <input type="file" accept="image/*" multiple>
-                            <span class="upload-text">Upload more memories</span>
-                            <small class="upload-note" data-default="Drag files or tap to browse.">Drag files or tap to browse.</small>
-                        </label>
-                    </article>
+                        <span class="shelf-base" aria-hidden="true"></span>
+                    </div>
                 </div>
+                <p class="shelf-note">Add your recap links above when they’re ready—the shelf scrolls automatically once spines are present.</p>
             </section>
         </main>
     </div>
@@ -1226,6 +1391,9 @@
         const contributionCancel = document.getElementById("contribution-cancel");
         const contributionFormToggle = document.getElementById("toggle-contribution-form");
         const contributionEditToggle = document.getElementById("toggle-contribution-edit");
+        const shelfTrack = document.querySelector(".shelf-track");
+        const shelfScrollTrack = document.querySelector(".shelf-scroll-track");
+        const shelfScrollThumb = document.querySelector(".shelf-scroll-thumb");
 
         const suggestions = [];
 
@@ -1326,11 +1494,7 @@
             });
         };
 
-        const defaultContributions = [
-            { id: 1, name: "Mira", dish: "Citrus + fennel salad", page: "118" },
-            { id: 2, name: "Jon", dish: "Buttermilk-brined roast", page: "132" },
-            { id: 3, name: "Priya", dish: "Salted caramel pots", page: "210" }
-        ];
+        const defaultContributions = [];
 
         const ensureAttendees = (item) => {
             if (!item.attendees) {
@@ -1776,6 +1940,84 @@
                 contributionName.focus();
             }
         });
+
+        const updateShelfScroll = () => {
+            if (!shelfTrack || !shelfScrollTrack || !shelfScrollThumb) {
+                return;
+            }
+            const scrollableWidth = shelfTrack.scrollWidth;
+            const visibleWidth = shelfTrack.clientWidth;
+            const maxScroll = Math.max(0, scrollableWidth - visibleWidth);
+            const trackWidth = shelfScrollTrack.clientWidth;
+            const thumbWidth = maxScroll === 0 ? trackWidth : Math.max((visibleWidth / scrollableWidth) * trackWidth, 36);
+            const thumbTravel = Math.max(trackWidth - thumbWidth, 0);
+            const offset = maxScroll === 0 ? 0 : (shelfTrack.scrollLeft / maxScroll) * thumbTravel;
+
+            shelfScrollThumb.style.width = `${thumbWidth}px`;
+            shelfScrollThumb.style.transform = `translateX(${offset}px)`;
+            shelfScrollTrack.classList.toggle("disabled", maxScroll === 0);
+        };
+
+        const scrollShelfToRatio = (ratio, smooth = true) => {
+            if (!shelfTrack) return;
+            const maxScroll = Math.max(0, shelfTrack.scrollWidth - shelfTrack.clientWidth);
+            shelfTrack.scrollTo({
+                left: ratio * maxScroll,
+                behavior: smooth ? "smooth" : "auto"
+            });
+        };
+
+        if (shelfTrack && shelfScrollTrack && shelfScrollThumb) {
+            shelfTrack.addEventListener("scroll", updateShelfScroll);
+            window.addEventListener("resize", updateShelfScroll);
+
+            shelfScrollTrack.addEventListener("pointerdown", (event) => {
+                if (shelfScrollTrack.classList.contains("disabled")) return;
+                const rect = shelfScrollTrack.getBoundingClientRect();
+                const ratio = Math.min(Math.max((event.clientX - rect.left) / rect.width, 0), 1);
+                scrollShelfToRatio(ratio);
+            });
+
+            let draggingThumb = false;
+            let thumbPointerId = null;
+            let dragOffset = 0;
+
+            shelfScrollThumb.addEventListener("pointerdown", (event) => {
+                if (shelfScrollTrack.classList.contains("disabled")) return;
+                draggingThumb = true;
+                thumbPointerId = event.pointerId;
+                dragOffset = event.clientX - shelfScrollThumb.getBoundingClientRect().left;
+                shelfScrollThumb.setPointerCapture(thumbPointerId);
+                event.preventDefault();
+            });
+
+            const pointerMove = (event) => {
+                if (!draggingThumb) return;
+                const rect = shelfScrollTrack.getBoundingClientRect();
+                const thumbWidth = shelfScrollThumb.offsetWidth;
+                const trackWidth = rect.width;
+                const maxTravel = Math.max(trackWidth - thumbWidth, 0);
+                let position = event.clientX - rect.left - dragOffset;
+                position = Math.min(Math.max(position, 0), maxTravel);
+                const ratio = maxTravel === 0 ? 0 : position / maxTravel;
+                scrollShelfToRatio(ratio, false);
+            };
+
+            const pointerUp = () => {
+                if (!draggingThumb) return;
+                draggingThumb = false;
+                if (thumbPointerId !== null) {
+                    shelfScrollThumb.releasePointerCapture(thumbPointerId);
+                }
+                thumbPointerId = null;
+            };
+
+            shelfScrollThumb.addEventListener("pointermove", pointerMove);
+            shelfScrollThumb.addEventListener("pointerup", pointerUp);
+            shelfScrollThumb.addEventListener("pointercancel", pointerUp);
+
+            updateShelfScroll();
+        }
 
         calendarTooltip.addEventListener("click", (event) => {
             const action = event.target.dataset.tooltipAction;
