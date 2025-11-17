@@ -1248,58 +1248,13 @@
                 </div>
                 <div class="hero-card hero-info">
                     <h2>What is it?</h2>
-                    <p>A potluck-style gathering where every guest brings a dish from one shared cookbook.</p>
-                    <p>Use the calendar below to pick a date you're able to attend. </p>
+                    <p>Essentially a potluck, but focused around a different cook book each time.</p>
+                    <p>Scroll down to use the party planner to pick your available dates.</p>
                 </div>
             </div>
         </aside>
 
         <main>
-            <section class="panel glass hero" id="top">
-                <div class="hero-card glass" style="grid-column: 1 / -1;">
-                    <p class="eyebrow">Upcoming cookbook</p>
-                    <h1>Salt, Fat, Acid, Heat</h1>
-                    <p class="cookbook-title">
-                        <a href="https://www.amazon.com/s?k=salt+fat+acid+heat+cookbook&adgrpid=192017047408&hvadid=779670824312&hvdev=c&hvexpln=0&hvlocphy=9198937&hvnetw=g&hvocijid=1301253900372127260--&hvqmt=e&hvrand=1301253900372127260&hvtargid=kwd-325948234444&hydadcr=4853_13513634_29928&mcid=dd78c11b84853be7b4942ebf1c2a5e82&tag=googhydr-20&ref=pd_sl_5e9hsd7z4u_e" target="_blank" rel="noopener noreferrer">
-                            Shop “Salt, Fat, Acid, Heat” on Amazon
-                        </a>
-                    </p>
-                    <p class="cookbook-link">
-                        or <a href="https://griersmusings.wordpress.com/wp-content/uploads/2020/06/salt-fat-acid-heat.pdf" target="_blank" rel="noopener noreferrer">view the full cookbook PDF</a>
-                    </p>
-                    <p>A loose excuse to hang out with family and close friends. Add what you want to cook below.</p>
-                </div>
-                <div class="panel glass" style="grid-column: 1 / -1;">
-                    <div class="section-header">
-                        <div>
-                            <p class="eyebrow">Potluck check-in</p>
-                            <h2>Who's cooking what?</h2>
-                        </div>
-                    </div>
-                    <form id="contribution-form" class="name-form hidden">
-                        <label>
-                            <span>Name</span>
-                            <input type="text" id="contribution-name" placeholder="e.g. Jamie" required>
-                        </label>
-                        <label>
-                            <span>Dish</span>
-                            <input type="text" id="contribution-dish" placeholder="e.g. Herby citrus salad" required>
-                        </label>
-                        <label>
-                            <span>Page #</span>
-                            <input type="text" id="contribution-page" placeholder="e.g. 126" required>
-                        </label>
-                        <button class="btn primary" type="submit" id="contribution-submit">Save dish</button>
-                        <button class="btn ghost hidden" type="button" id="contribution-cancel">Cancel edit</button>
-                    </form>
-                    <ul id="contributions-list" class="contribution-list"></ul>
-                    <div class="contribution-controls">
-                        <button class="btn primary" type="button" id="toggle-contribution-form">Add dish</button>
-                        <button class="btn ghost" type="button" id="toggle-contribution-edit">Edit list</button>
-                    </div>
-                </div>
-            </section>
-
             <section class="panel glass calendar" id="calendar">
                 <div class="section-header">
                     <div>
@@ -1322,7 +1277,7 @@
                 </div>
                 <div class="forecast">
                     <article class="forecast-card glass">
-                        <p class="eyebrow">Party planning</p>
+                        <p class="eyebrow">the next event...</p>
                         <h3>1st Cook Buck Club Gathering</h3>
                         <ul class="forecast-meta">
                             <li><strong>Tentative Date</strong><span id="featured-date-value">Date TBD</span></li>
@@ -1350,19 +1305,64 @@
                             </div>
                         </div>
                         <div class="calendar-grid" id="calendar-grid"></div>
-                </div>
+                    </div>
                     <ul id="suggestion-list" class="suggestion-list">
                         <li class="empty-state">Collecting suggestions...</li>
                     </ul>
                 </div>
             </section>
 
+            <section class="panel glass hero" id="top">
+                <div class="hero-card glass" style="grid-column: 1 / -1;">
+                    <p class="eyebrow">Featured cookbook</p>
+                    <h1>Salt, Fat, Acid, Heat</h1>
+                    <p class="cookbook-title">
+                        <a href="https://www.amazon.com/s?k=salt+fat+acid+heat+cookbook&adgrpid=192017047408&hvadid=779670824312&hvdev=c&hvexpln=0&hvlocphy=9198937&hvnetw=g&hvocijid=1301253900372127260--&hvqmt=e&hvrand=1301253900372127260&hvtargid=kwd-325948234444&hydadcr=4853_13513634_29928&mcid=dd78c11b84853be7b4942ebf1c2a5e82&tag=googhydr-20&ref=pd_sl_5e9hsd7z4u_e" target="_blank" rel="noopener noreferrer">
+                            Shop “Salt, Fat, Acid, Heat” on Amazon
+                        </a>
+                    </p>
+                    <p class="cookbook-link">
+                        or <a href="https://griersmusings.wordpress.com/wp-content/uploads/2020/06/salt-fat-acid-heat.pdf" target="_blank" rel="noopener noreferrer">view the full cookbook PDF</a>
+                    </p>
+                    <p>A loose excuse to hang out with family and close friends. Add what you want to cook below.</p>
+                </div>
+                <div class="panel glass" style="grid-column: 1 / -1;">
+                    <div class="section-header">
+                        <div>
+                            <p class="eyebrow">menu</p>
+                            <h2>Who's cooking what?</h2>
+                        </div>
+                    </div>
+                    <form id="contribution-form" class="name-form hidden">
+                        <label>
+                            <span>Name</span>
+                            <input type="text" id="contribution-name" placeholder="e.g. Jamie" required>
+                        </label>
+                        <label>
+                            <span>Dish</span>
+                            <input type="text" id="contribution-dish" placeholder="e.g. Herby citrus salad" required>
+                        </label>
+                        <label>
+                            <span>Page #</span>
+                            <input type="text" id="contribution-page" placeholder="e.g. 126" required>
+                        </label>
+                        <button class="btn primary" type="submit" id="contribution-submit">Save dish</button>
+                        <button class="btn ghost hidden" type="button" id="contribution-cancel">Cancel edit</button>
+                    </form>
+                    <ul id="contributions-list" class="contribution-list"></ul>
+                    <div class="contribution-controls">
+                        <button class="btn primary" type="button" id="toggle-contribution-form">Add dish</button>
+                        <button class="btn ghost" type="button" id="toggle-contribution-edit">Edit list</button>
+                    </div>
+                </div>
+            </section>
+
             <section class="panel glass past-events" id="past-events">
                 <div class="section-header">
                     <div>
-                        <p class="eyebrow">Recap vault</p>
+                        <p class="eyebrow">looking back</p>
                         <h2>Past Gatherings</h2>
-                        <p>Each gathering is saved as a book. View the menu and see photos from the event.</p>
+                        <p>Each gathering is saved as a "book." View the menu and see photos from the event.</p>
                     </div>
                 </div>
                 <div class="bookshelf-wrapper">
