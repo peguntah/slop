@@ -87,10 +87,15 @@
 
         .sidebar {
             flex: 0 0 280px;
-            padding: 2rem;
+            padding: 0;
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
+        }
+
+        .sidebar-pane {
+            width: 100%;
+            border-radius: 28px;
         }
 
         .brand h2 {
@@ -106,19 +111,12 @@
             color: var(--moss);
         }
 
-        .sidebar-block {
-            padding: 1.25rem;
-            border-radius: 22px;
-            background: rgba(255, 255, 255, 0.45);
-            border: 1px solid rgba(255, 255, 255, 0.35);
-        }
-
-        .sidebar-block h3 {
+        .sidebar-pane h3 {
             margin-top: 0;
             margin-bottom: 0.4rem;
         }
 
-        .sidebar-block p {
+        .sidebar-pane p {
             margin-top: 0;
             margin-bottom: 0.75rem;
             color: rgba(45, 38, 31, 0.75);
@@ -485,6 +483,24 @@
             background: rgba(180, 123, 89, 0.12);
             color: var(--clay);
             border: 1px solid rgba(180, 123, 89, 0.25);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.2rem;
+            margin-top: 0.35rem;
+        }
+
+        .vote-tag .vote-count-number {
+            font-weight: 600;
+        }
+
+        .vote-tag .vote-count-label {
+            text-transform: lowercase;
+        }
+
+        @media (max-width: 540px) {
+            .vote-tag .vote-count-label {
+                display: none;
+            }
         }
 
         .calendar-day.suggested {
@@ -512,12 +528,6 @@
             border: none;
             cursor: default;
             pointer-events: none;
-        }
-
-        .calendar-legend {
-            margin-top: 0.75rem;
-            font-size: 0.85rem;
-            color: rgba(45, 38, 31, 0.6);
         }
 
         .vote-buttons {
@@ -559,13 +569,6 @@
             color: rgba(45, 38, 31, 0.6);
         }
 
-        .suggestion-form label {
-            display: flex;
-            flex-direction: column;
-            gap: 0.4rem;
-            margin: 0;
-        }
-
         input,
         textarea,
         select {
@@ -579,53 +582,12 @@
             min-height: 52px;
         }
 
-        .suggestion-form input {
-            margin-top: 0;
-        }
-
-        .proposed-date-input {
-            position: relative;
-            border-radius: 16px;
-            border: 1px solid rgba(91, 100, 91, 0.25);
-            background: rgba(255, 255, 255, 0.9);
-        }
-
-        .proposed-date-input input {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            border: none;
-            background: transparent;
-            margin: 0;
-            min-height: auto;
-            font: inherit;
-            color: transparent;
-            -webkit-text-fill-color: transparent;
-            caret-color: transparent;
-            appearance: none;
-        }
-
-        .proposed-date-input input:focus,
-        .proposed-date-input input.has-value {
-            color: var(--text);
-            -webkit-text-fill-color: var(--text);
-            caret-color: var(--text);
-        }
-
-        .proposed-date-input input:focus-visible {
-            outline: none;
-        }
-
-        .proposed-date-input input::-webkit-datetime-edit {
-            color: inherit;
-        }
-
-        .proposed-date-input input::-webkit-calendar-picker-indicator {
-            position: absolute;
-            right: 0.75rem;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            opacity: 0.7;
+        .proposed-date-note {
+            margin: 0 0 0.75rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: rgba(45, 38, 31, 0.6);
         }
 
         textarea {
@@ -635,42 +597,6 @@
 
         form button[type="submit"] {
             justify-self: flex-start;
-        }
-
-        .suggestion-form {
-            grid-template-columns: minmax(220px, 3fr) minmax(150px, 1fr);
-            align-items: end;
-            max-width: 560px;
-            width: 100%;
-            margin: 0 auto 1.5rem;
-        }
-
-        .suggestion-form button[type="submit"] {
-            grid-column: auto;
-            align-self: end;
-            width: 100%;
-            padding: 0;
-            border-radius: 18px;
-            height: 48px;
-        }
-
-        .suggestion-form .btn {
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-        }
-
-        @media (max-width: 540px) {
-            .suggestion-form {
-                grid-template-columns: 1fr;
-                margin: 0 auto 1.5rem;
-            }
-
-            .suggestion-form button[type="submit"] {
-                width: 100%;
-            }
         }
 
         .suggestion-list {
@@ -713,17 +639,6 @@
 
             .calendar-shell {
                 padding: 1.2rem;
-            }
-
-            .suggestion-form {
-                width: 100%;
-                max-width: 100%;
-                align-items: stretch;
-            }
-
-            .suggestion-form label,
-            .suggestion-form button {
-                width: 100%;
             }
 
             .vote {
@@ -790,26 +705,6 @@
 
         .name-form button {
             padding: 0.75rem 1.4rem;
-        }
-
-        .date-label {
-            width: 100%;
-        }
-
-        .proposed-date-placeholder {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.9rem;
-            color: rgba(45, 38, 31, 0.45);
-            pointer-events: none;
-            transition: opacity 150ms ease;
-        }
-
-        .proposed-date-input.filled .proposed-date-placeholder,
-        .proposed-date-input:focus-within .proposed-date-placeholder {
-            opacity: 0;
         }
 
         .greeting-wrapper {
@@ -1096,7 +991,16 @@
             }
 
             .sidebar {
-                flex: 1;
+                flex: 0 0 100%;
+                width: 100%;
+                max-width: none;
+                padding: 0;
+                align-self: stretch;
+            }
+
+            .sidebar-pane {
+                width: 100%;
+                padding: 2rem;
             }
         }
 
@@ -1113,26 +1017,16 @@
 </head>
 <body>
     <div class="page">
-        <aside class="sidebar glass">
-            <div class="brand">
-                <p class="label">Cook Buck Club</p>
+        <aside class="sidebar">
+            <div class="sidebar-pane panel glass brand">
+                <p class="label">IT'S GIVING POTLUCK</p>
                 <h2>Cook Buck Club</h2>
-                <p>Friends-only supper circle</p>
+                <p>A loose excuse to hang out with family and close friends.</p>
             </div>
-            <div class="sidebar-block">
-                <h3>Calendar Poll</h3>
-                <p>Share the dates that work for you and vote on our next warm table.</p>
-                <a class="pill-link" href="#calendar">Open calendar</a>
-            </div>
-            <div class="sidebar-block">
-                <h3>Past Events</h3>
-                <p>Post recaps, upload photos, and note the dishes that made the night.</p>
-                <ul class="sidebar-links">
-                    <li><a href="#event-1">Fireside Mezze</a></li>
-                    <li><a href="#event-2">Coastal Comforts</a></li>
-                    <li><a href="#event-3">Harvest Potluck</a></li>
-                </ul>
-                <a class="pill-link subtle" href="#past-events">Browse archive</a>
+            <div class="sidebar-pane panel glass">
+                <h3>What is it?</h3>
+                <p>A potluck-style gathering where every guest brings a dish from one shared cookbook.</p>
+                <p>Use the calendar below to pick a date you're able to attend. </p>
             </div>
         </aside>
 
@@ -1208,16 +1102,7 @@
                     </article>
                 </div>
                 <div id="planning-body" class="planning-body">
-                    <form id="suggestion-form" class="suggestion-form">
-                        <label class="date-label">
-                            <span>Proposed date</span>
-                            <div class="proposed-date-input">
-                                <input type="date" name="date" required>
-                                <span class="proposed-date-placeholder">Select a date</span>
-                            </div>
-                        </label>
-                        <button class="btn primary" type="submit">Add Date</button>
-                    </form>
+                    <p class="proposed-date-note">Proposed date</p>
                     <div class="calendar-shell">
                         <div class="calendar-header">
                             <div class="calendar-nav">
@@ -1234,8 +1119,7 @@
                             </div>
                         </div>
                         <div class="calendar-grid" id="calendar-grid"></div>
-                        <p class="calendar-legend">Soft green squares mark suggested dates. Clay highlights show the manual pick. Tap any suggested date to mark your availability.</p>
-                    </div>
+                </div>
                     <ul id="suggestion-list" class="suggestion-list">
                         <li class="empty-state">Collecting suggestions...</li>
                     </ul>
@@ -1321,7 +1205,6 @@
 
                     <script>
         const suggestionList = document.getElementById("suggestion-list");
-        const suggestionForm = document.getElementById("suggestion-form");
         const nameForm = document.getElementById("name-form");
         const greetingMessage = document.getElementById("planner-greeting");
         const greetingWrapper = document.getElementById("greeting-wrapper");
@@ -1334,8 +1217,6 @@
         const calendarJumpInput = document.getElementById("calendar-jump-input");
         const calendarJumpLabel = document.getElementById("calendar-jump-label");
         const calendarJump = document.getElementById("calendar-jump");
-        const dateInput = suggestionForm.querySelector('input[name="date"]');
-        const proposedDateWrapper = document.querySelector(".proposed-date-input");
         const contributionsList = document.getElementById("contributions-list");
         const contributionForm = document.getElementById("contribution-form");
         const contributionName = document.getElementById("contribution-name");
@@ -1346,20 +1227,7 @@
         const contributionFormToggle = document.getElementById("toggle-contribution-form");
         const contributionEditToggle = document.getElementById("toggle-contribution-edit");
 
-        const suggestions = [
-            {
-                id: 1,
-                date: "2024-07-19",
-                details: "Patio spritz bar &middot; focaccia",
-                attendees: new Set(["Mira", "Priya", "Jamie"])
-            },
-            {
-                id: 2,
-                date: "2024-07-27",
-                details: "Lazy brunch plates",
-                attendees: new Set(["Jon", "Elaine"])
-            }
-        ];
+        const suggestions = [];
 
         let suggestionId = suggestions.length;
         let contributions = [];
@@ -1399,23 +1267,39 @@
             const now = new Date();
             return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
         })();
-        dateInput.min = todayIso;
         calendarJumpInput.min = todayIso;
 
-        const updateProposedDateState = () => {
-            if (!proposedDateWrapper) return;
-            if (dateInput.value) {
-                proposedDateWrapper.classList.add("filled");
-                dateInput.classList.add("has-value");
-            } else {
-                proposedDateWrapper.classList.remove("filled");
-                dateInput.classList.remove("has-value");
+        const createSuggestionForDate = (iso) => {
+            if (!iso) {
+                return null;
             }
-        };
 
-        updateProposedDateState();
-        dateInput.addEventListener("change", updateProposedDateState);
-        dateInput.addEventListener("input", updateProposedDateState);
+            if (!currentName) {
+                alert("Add your name above the calendar first.");
+                return null;
+            }
+
+            if (iso < todayIso) {
+                alert("Please pick a date starting today or later.");
+                return null;
+            }
+
+            if (suggestions.some((item) => item.date === iso)) {
+                alert("That date is already on the board.");
+                return null;
+            }
+
+            const suggestion = {
+                id: ++suggestionId,
+                date: iso,
+                details: "",
+                attendees: new Set()
+            };
+
+            addAttendee(suggestion, currentName);
+            suggestions.push(suggestion);
+            return suggestion;
+        };
 
         const setCalendarJumpLabel = () => {
             if (calendarJumpInput.value) {
@@ -1585,26 +1469,35 @@
             tooltipButton = button;
             tooltipDate = iso;
             const date = parseDateString(iso);
-            const attendees = suggestion ? Array.from(ensureAttendees(suggestion)) : [];
-            const userHasVote = suggestion ? ensureAttendees(suggestion).has(currentName) : false;
             const header = `<p class="tooltip-day">${date.getDate()} &middot; ${date.toLocaleDateString(undefined, { month: "short" })}</p>`;
+            const isPast = iso < todayIso;
             let body = "";
-            if (attendees.length) {
-                body = `<ul class="tooltip-list">${attendees.map((name) => `<li>${name}</li>`).join("")}</ul>`;
-            } else if (suggestion) {
-                body = '<p class="tooltip-empty">No votes yet. Be the first.</p>';
-            } else {
-                body = '<p class="tooltip-empty">No plan here yet. Use Add Date above to suggest it.</p>';
-            }
-
             let actions = "";
+
             if (suggestion) {
+                const attendees = Array.from(ensureAttendees(suggestion));
+                const userHasVote = ensureAttendees(suggestion).has(currentName);
+                if (attendees.length) {
+                    body = `<ul class="tooltip-list">${attendees.map((name) => `<li>${name}</li>`).join("")}</ul>`;
+                } else {
+                    body = '<p class="tooltip-empty">No votes yet. Be the first.</p>';
+                }
+
                 const voteDisabled = userHasVote;
                 const removeDisabled = !userHasVote;
                 actions = `
                     <div class="tooltip-actions">
                         <button class="btn primary" data-tooltip-action="add" data-tooltip-date="${iso}" ${voteDisabled ? "disabled" : ""}>Vote this date</button>
                         <button class="btn ghost" data-tooltip-action="remove" data-tooltip-date="${iso}" ${removeDisabled ? "disabled" : ""}>Remove vote</button>
+                    </div>
+                `;
+            } else {
+                body = isPast
+                    ? '<p class="tooltip-empty">This date has already passed.</p>'
+                    : '<p class="tooltip-empty">No plan here yet. Want to suggest it?</p>';
+                actions = `
+                    <div class="tooltip-actions">
+                        <button class="btn primary" data-tooltip-action="suggest" data-tooltip-date="${iso}" ${isPast ? "disabled" : ""}>Add Date</button>
                     </div>
                 `;
             }
@@ -1650,7 +1543,7 @@
 
                 const count = suggestion ? getScore(suggestion) : 0;
                 const voteTag = count
-                    ? `<span class="vote-tag">${count} friend${count === 1 ? "" : "s"}</span>`
+                    ? `<span class="vote-tag"><span class="vote-count-number">${count}</span><span class="vote-count-label">${count === 1 ? "friend" : "friends"}</span></span>`
                     : "";
 
                 cells.push(`
@@ -1820,26 +1713,6 @@
             toggleContributionEditing();
         });
 
-        suggestionForm.addEventListener("submit", (event) => {
-            event.preventDefault();
-            const formData = new FormData(suggestionForm);
-            const date = formData.get("date");
-            if (!date) {
-                return;
-            }
-
-            suggestions.push({
-                id: ++suggestionId,
-                date,
-                details: "",
-                attendees: new Set()
-            });
-
-            suggestionForm.reset();
-            updateProposedDateState();
-            refreshUI();
-        });
-
         contributionForm.addEventListener("submit", (event) => {
             event.preventDefault();
             const name = contributionName.value.trim();
@@ -1911,6 +1784,19 @@
                 return;
             }
 
+            if (action === "suggest") {
+                const created = createSuggestionForDate(iso);
+                if (!created) {
+                    return;
+                }
+                refreshUI();
+                const newButton = calendarGrid.querySelector(`[data-date="${created.date}"]`);
+                if (newButton) {
+                    showTooltip(newButton, created.date, created);
+                }
+                return;
+            }
+
             if (!currentName) {
                 alert("Add your name above the calendar first.");
                 return;
@@ -1930,9 +1816,10 @@
             }
 
             refreshUI();
-            const button = tooltipButton;
-            if (button) {
-                showTooltip(button, iso, suggestion);
+            const refreshedSuggestion = suggestions.find((item) => item.date === iso);
+            const newButton = calendarGrid.querySelector(`[data-date="${iso}"]`);
+            if (newButton && refreshedSuggestion) {
+                showTooltip(newButton, iso, refreshedSuggestion);
             }
         });
 
