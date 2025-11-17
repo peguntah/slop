@@ -21,6 +21,12 @@
             box-sizing: border-box;
         }
 
+        html,
+        body {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
         body {
             margin: 0;
             min-height: 100vh;
@@ -28,7 +34,6 @@
             color: var(--text);
             background: radial-gradient(circle at top, #f9f6f1 0%, #e8e2d4 35%, #d9cfbf 70%, #cbbda8 100%);
             position: relative;
-            overflow-x: hidden;
             padding: clamp(1.5rem, 4vw, 3rem) 0;
         }
 
@@ -36,21 +41,21 @@
         body::after {
             content: "";
             position: absolute;
-            width: 520px;
-            height: 520px;
+            width: clamp(260px, 70vw, 520px);
+            height: clamp(260px, 70vw, 520px);
             background: radial-gradient(circle, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0));
             filter: blur(2px);
             z-index: 0;
         }
 
         body::before {
-            top: 2rem;
-            left: -200px;
+            top: clamp(1rem, 4vw, 2rem);
+            left: clamp(-140px, -20vw, -60px);
         }
 
         body::after {
-            bottom: -100px;
-            right: -220px;
+            bottom: clamp(-80px, -12vw, -40px);
+            right: clamp(-140px, -18vw, -60px);
         }
 
         .page {
@@ -586,12 +591,16 @@
             min-height: auto;
             font: inherit;
             color: transparent;
+            -webkit-text-fill-color: transparent;
+            caret-color: transparent;
             appearance: none;
         }
 
         .proposed-date-input input:focus,
         .proposed-date-input input.has-value {
             color: var(--text);
+            -webkit-text-fill-color: var(--text);
+            caret-color: var(--text);
         }
 
         .proposed-date-input input:focus-visible {
@@ -732,6 +741,7 @@
 
             .sidebar {
                 padding: 1.5rem 1.25rem;
+                width: 100%;
             }
 
             .calendar-shell {
