@@ -541,6 +541,15 @@
             color: rgba(45, 38, 31, 0.6);
         }
 
+        .input-hint {
+            display: block;
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: rgba(45, 38, 31, 0.45);
+            margin: 0.2rem 0 0.4rem;
+        }
+
         .suggestion-form label {
             display: flex;
             flex-direction: column;
@@ -648,6 +657,27 @@
             .calendar-shell {
                 padding: 1.2rem;
             }
+
+            .suggestion-form {
+                width: 100%;
+                max-width: 100%;
+                align-items: stretch;
+            }
+
+            .suggestion-form label,
+            .suggestion-form button {
+                width: 100%;
+            }
+
+            .vote {
+                align-items: flex-start;
+                width: 100%;
+            }
+
+            .vote-count {
+                width: 100%;
+                text-align: left;
+            }
         }
 
         .availability-note {
@@ -684,6 +714,7 @@
             display: flex;
             align-items: center;
             gap: 0.75rem;
+            margin-top: 0.8rem;
         }
 
         .greeting-message {
@@ -699,12 +730,28 @@
             font-size: 0.9rem;
         }
 
-        .visually-hidden {
+        .calendar-jump {
+            border: 1px solid rgba(95, 111, 99, 0.3);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.85);
+            min-width: 120px;
+            height: 42px;
+            padding: 0 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--deep-sage);
+            position: relative;
+        }
+
+        .calendar-jump input {
             position: absolute;
+            inset: 0;
             opacity: 0;
-            pointer-events: none;
-            width: 0;
-            height: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
         }
 
         .planning-body {
@@ -1051,6 +1098,7 @@
                     <form id="suggestion-form" class="suggestion-form">
                         <label>
                             <span>Proposed date</span>
+                            <small class="input-hint">mm/dd/yyyy</small>
                             <input type="date" name="date" required>
                         </label>
                         <button class="btn primary" type="submit">Add Date</button>
@@ -1059,7 +1107,10 @@
                         <div class="calendar-header">
                             <div class="calendar-nav">
                                 <button type="button" data-calendar-nav="prev">&#8249;</button>
-                                <button type="button" class="btn ghost calendar-jump-btn" id="calendar-jump-button">Go to date</button>
+                                <div class="calendar-jump" id="calendar-jump">
+                                    <span id="calendar-jump-label">Go to date</span>
+                                    <input type="date" id="calendar-jump-input" aria-label="Jump to date">
+                                </div>
                                 <button type="button" data-calendar-nav="next">&#8250;</button>
                             </div>
                             <div class="calendar-header-title">
@@ -1070,7 +1121,6 @@
                                 <button type="button" data-calendar-nav="today">Today</button>
                             </div>
                         </div>
-                        <input type="date" id="calendar-jump-input" class="visually-hidden">
                         <div class="calendar-grid" id="calendar-grid"></div>
                         <p class="calendar-legend">Soft green squares mark suggested dates. Clay highlights show the manual pick. Tap any suggested date to mark your availability.</p>
                     </div>
@@ -1170,7 +1220,7 @@
         const calendarGrid = document.getElementById("calendar-grid");
         const calendarMonthLabel = document.getElementById("calendar-month");
         const calendarJumpInput = document.getElementById("calendar-jump-input");
-        const calendarJumpButton = document.getElementById("calendar-jump-button");
+        const calendarJumpLabel = document.getElementById("calendar-jump-label");
         const dateInput = suggestionForm.querySelector('input[name="date"]');
         const contributionsList = document.getElementById("contributions-list");
         const contributionForm = document.getElementById("contribution-form");
@@ -1233,6 +1283,19 @@
         })();
         dateInput.min = todayIso;
         calendarJumpInput.min = todayIso;
+
+        const setCalendarJumpLabel = () => {
+            if (calendarJumpInput.value) {
+                calendarJumpLabel.textContent = formatDate(calendarJumpInput.value, {
+                    month: "short",
+                    day: "numeric"
+                });
+            } else {
+                calendarJumpLabel.textContent = "Go to date";
+            }
+        };
+
+        setCalendarJumpLabel();
 
         const getMonthLabel = (date) => {
             const isCompact = window.innerWidth <= 520;
@@ -1741,17 +1804,10 @@
             });
         });
 
-        calendarJumpButton.addEventListener("click", () => {
-            if (calendarJumpInput.showPicker) {
-                calendarJumpInput.showPicker();
-            } else {
-                calendarJumpInput.click();
-            }
-        });
-
         calendarJumpInput.addEventListener("change", () => {
             const value = calendarJumpInput.value;
             if (!value) {
+                setCalendarJumpLabel();
                 return;
             }
             const [year, month, day] = value.split("-").map(Number);
@@ -1761,11 +1817,13 @@
             }
             currentMonth.setFullYear(target.getFullYear(), target.getMonth(), 1);
             renderCalendar();
+            setCalendarJumpLabel();
         });
 
         window.addEventListener("resize", () => {
             positionTooltip();
             updateMonthLabel();
+            setCalendarJumpLabel();
         });
         window.addEventListener("scroll", positionTooltip);
 
