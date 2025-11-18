@@ -742,8 +742,12 @@
                 width: calc(100% + 2rem);
             }
 
+            .bookshelf {
+                --shelf-side-padding: 1rem;
+            }
+
             .shelf-track {
-                padding: 0.75rem 1rem 0.25rem;
+                padding: 0.75rem var(--shelf-side-padding) 0.25rem;
             }
         }
 
@@ -989,9 +993,10 @@
         }
 
         .bookshelf {
+            --shelf-side-padding: 1.75rem;
             position: relative;
             border-radius: 28px;
-            padding: 1.25rem 2rem 2rem;
+            padding: 1.25rem var(--shelf-side-padding) 2rem;
             background: rgba(255, 255, 255, 0.55);
             border: 1px solid rgba(255, 255, 255, 0.35);
             display: flex;
@@ -1071,7 +1076,7 @@
             align-items: flex-end;
             overflow-x: auto;
             overflow-y: visible;
-            padding: 0.5rem 1.75rem 0.2rem;
+            padding: 0.5rem var(--shelf-side-padding) 0.2rem;
             border-radius: 22px;
             background: rgba(255, 255, 255, 0.65);
             scrollbar-width: none;
@@ -1124,8 +1129,8 @@
 
         .shelf-base {
             position: absolute;
-            left: 2.5rem;
-            right: 2.5rem;
+            left: var(--shelf-side-padding);
+            right: var(--shelf-side-padding);
             bottom: 0.7rem;
             height: 15px;
             border-radius: 14px;
