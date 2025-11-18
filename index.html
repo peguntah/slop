@@ -1102,6 +1102,10 @@
             scrollbar-width: none;
         }
 
+        .shelf-track.is-centered {
+            justify-content: center;
+        }
+
         .shelf-track::-webkit-scrollbar {
             display: none;
         }
@@ -2014,6 +2018,7 @@
             shelfScrollThumb.style.width = `${thumbWidth}px`;
             shelfScrollThumb.style.transform = `translateX(${offset}px)`;
             shelfScrollTrack.classList.toggle("disabled", maxScroll === 0);
+            shelfTrack.classList.toggle("is-centered", maxScroll === 0);
         };
 
         const scrollShelfToRatio = (ratio, smooth = true) => {
