@@ -287,6 +287,159 @@
             box-shadow: none;
         }
 
+        .landing-hero {
+            max-width: 1200px;
+            width: min(1200px, calc(100% - 2rem));
+            margin: 0 auto clamp(2.5rem, 6vw, 4rem);
+            padding: clamp(1.5rem, 5vw, 3rem);
+            border-radius: 48px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(243, 238, 228, 0.75))
+                    padding-box,
+                radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0)) border-box;
+            box-shadow:
+                0 40px 80px rgba(46, 43, 37, 0.2),
+                inset 0 0 60px rgba(255, 255, 255, 0.3);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: clamp(1.5rem, 4vw, 3rem);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .landing-hero::after {
+            content: "";
+            position: absolute;
+            inset: 12px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+        }
+
+        .hero-branding {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .hero-overview {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .hero-branding .label {
+            font-size: 0.85rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: rgba(45, 38, 31, 0.7);
+            margin: 0;
+        }
+
+        .landing-hero h1 {
+            margin: 0;
+            font-size: clamp(2rem, 4.5vw, 3.2rem);
+            color: var(--deep-sage);
+            line-height: 1.1;
+        }
+
+        .hero-lead {
+            margin: 0;
+            font-size: 1.1rem;
+            color: rgba(45, 38, 31, 0.8);
+            max-width: 40ch;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .hero-actions .btn {
+            text-decoration: none;
+        }
+
+        .landing-hero a.btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .hero-menu a {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            padding: 0.9rem 1.1rem;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.55);
+            color: inherit;
+            text-decoration: none;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .hero-menu a:hover {
+            transform: translateY(-2px);
+            border-color: rgba(76, 91, 79, 0.4);
+        }
+
+        .hero-menu strong {
+            font-size: 1rem;
+            color: var(--deep-sage);
+        }
+
+        .hero-menu span {
+            font-size: 0.85rem;
+            color: rgba(45, 38, 31, 0.7);
+        }
+
+        .hero-menu small {
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-size: 0.7rem;
+            color: rgba(45, 38, 31, 0.6);
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .hero-stat {
+            border-radius: 18px;
+            padding: 1rem;
+            border: 1px solid rgba(95, 111, 99, 0.2);
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .hero-stat strong {
+            display: block;
+            font-size: 1.15rem;
+            color: var(--deep-sage);
+        }
+
+        .hero-stat span {
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            font-size: 0.7rem;
+            color: rgba(45, 38, 31, 0.6);
+            display: block;
+            margin-bottom: 0.35rem;
+        }
+
         .hero-card {
             padding: 1.5rem;
             display: flex;
@@ -295,6 +448,11 @@
             background: rgba(255, 255, 255, 0.6);
             border-radius: 24px;
             border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        section[id],
+        .panel[id] {
+            scroll-margin-top: clamp(16px, 4vw, 24px);
         }
 
         .hero-card.brand,
@@ -743,6 +901,12 @@
                 padding: 0 1rem;
             }
 
+            .landing-hero {
+                width: calc(100% - 2rem);
+                margin: 0 auto 2rem;
+                padding: 1.5rem;
+            }
+
             .sidebar {
                 padding: 1.5rem 1.25rem;
                 width: 100%;
@@ -829,10 +993,7 @@
             color: var(--deep-sage);
         }
 
-        .edit-name-button {
-            position: absolute;
-            top: 0;
-            right: 0;
+        .edit-icon-button {
             width: 32px;
             height: 32px;
             border-radius: 999px;
@@ -847,17 +1008,48 @@
             transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
         }
 
-        .edit-name-button::before {
+        .edit-icon-button::before {
             content: "\270E";
             font-size: 0.85rem;
             line-height: 1;
         }
 
-        .edit-name-button:hover,
-        .edit-name-button:focus-visible {
+        .edit-icon-button.is-editing::before {
+            content: "\2713";
+        }
+
+        .edit-icon-button:hover,
+        .edit-icon-button:focus-visible {
             background: rgba(255, 255, 255, 0.95);
             color: var(--deep-sage);
             transform: translateY(-1px);
+        }
+
+        .greeting-wrapper .edit-icon-button {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        .contribution-controls .edit-icon-button {
+            background: rgba(240, 235, 226, 0.95);
+            border-color: rgba(95, 111, 99, 0.25);
+            color: var(--deep-sage);
+        }
+
+        .contribution-actions .edit-icon-button {
+            background: rgba(240, 235, 226, 0.85);
+            border-color: rgba(95, 111, 99, 0.2);
+            color: var(--moss);
+        }
+
+        .edit-icon-button:disabled,
+        .edit-icon-button.is-disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+            background: rgba(240, 235, 226, 0.5);
+            color: rgba(95, 111, 99, 0.5);
         }
 
         .calendar-jump {
@@ -1318,21 +1510,61 @@
     </style>
 </head>
 <body>
-    <div class="page">
-        <aside class="sidebar">
-            <div class="sidebar-pane panel glass hero hero-sidebar">
-                <div class="hero-card brand">
-                    <p class="label">IT'S GIVING POTLUCK</p>
-                    <h2>Cook Buck Club</h2>
-                    <p>A loose excuse to hang out with family and close friends.</p>
-                </div>
-                <div class="hero-card hero-info">
-                    <h2>What is it?</h2>
-                    <p>Essentially a potluck, but focused around a different cook book each time.</p>
-                    <p>Scroll down to use the party planner to pick your available dates.</p>
-                </div>
+    <header class="landing-hero">
+        <div class="hero-branding">
+            <p class="label">Cook Buck Club</p>
+            <h1>It's giving potluck.</h1>
+            <p class="hero-lead">
+                The group votes on which cookbook to use and then each person brings a unique dish from that cookbook. 
+
+            </p>
+            <div class="hero-actions">
+                <a class="btn primary" href="#calendar">Pick dates that work for you</a>
+                <a class="btn ghost" href="#menu">Browse the menu</a>
+                <a class="btn ghost" href="#past-events">See past books</a>
             </div>
-        </aside>
+        </div>
+        <div class="hero-overview">
+            <div class="hero-stats">
+                <article class="hero-stat">
+                    <span>Featured cookbook</span>
+                    <strong>Salt, Fat, Acid, Heat</strong>
+                </article>
+                <article class="hero-stat">
+                    <span>Location</span>
+                    <strong>French Prairie or Ironwood Terrace</strong>
+                </article>
+                <article class="hero-stat">
+                    <span>Next meetup</span>
+                    <strong>Pending votes</strong>
+                </article>
+            </div>
+            <ul class="hero-menu">
+                <li>
+                    <a href="#calendar">
+                        <small>Step 1</small>
+                        <strong>Party planner</strong>
+                        <span>Enter your name and vote on dates.</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#menu">
+                        <small>Step 2</small>
+                        <strong>Claim a dish</strong>
+                        <span>Pick a recipe from the featured cookbook.</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#past-events">
+                        <small>Step 3</small>
+                        <strong>Browse the shelf</strong>
+                        <span>Revisit past gatherings and inspiration.</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </header>
+    <div class="page">
 
         <main>
             <section class="panel glass calendar" id="calendar">
@@ -1352,7 +1584,7 @@
                     </form>
                     <div class="greeting-wrapper hidden" id="greeting-wrapper">
                         <p id="planner-greeting" class="greeting-message"></p>
-                        <button class="edit-name-button" type="button" id="edit-name" aria-label="Edit name"></button>
+                        <button class="edit-icon-button" type="button" id="edit-name" aria-label="Edit name"></button>
                     </div>
                 </div>
                 <div class="forecast">
@@ -1406,7 +1638,7 @@
                     </p>
                     <p>A loose excuse to hang out with family and close friends. Add what you want to cook below.</p>
                 </div>
-                <div class="panel glass" style="grid-column: 1 / -1;">
+                <div class="panel glass" style="grid-column: 1 / -1;" id="menu">
                     <div class="section-header">
                         <div>
                             <p class="eyebrow">menu</p>
@@ -1432,7 +1664,7 @@
                     <ul id="contributions-list" class="contribution-list"></ul>
                     <div class="contribution-controls">
                         <button class="btn primary" type="button" id="toggle-contribution-form">Add dish</button>
-                        <button class="btn ghost" type="button" id="toggle-contribution-edit">Edit list</button>
+                        <button class="edit-icon-button" type="button" id="toggle-contribution-edit" aria-label="Edit list" title="Edit list"></button>
                     </div>
                 </div>
             </section>
@@ -1881,10 +2113,30 @@
             }
         });
 
+        const setContributionEditToggleState = () => {
+            const label = contributionsEditing ? "Done editing" : "Edit list";
+            contributionEditToggle.setAttribute("aria-label", label);
+            contributionEditToggle.setAttribute("title", label);
+            contributionEditToggle.setAttribute("aria-pressed", contributionsEditing ? "true" : "false");
+            contributionEditToggle.classList.toggle("is-editing", contributionsEditing);
+        };
+
+        const updateContributionEditToggleAvailability = () => {
+            if (!contributions.length && contributionsEditing) {
+                contributionsEditing = false;
+            }
+            setContributionEditToggleState();
+            const hasContributions = contributions.length > 0;
+            contributionEditToggle.disabled = !hasContributions;
+            contributionEditToggle.setAttribute("aria-disabled", hasContributions ? "false" : "true");
+            contributionEditToggle.classList.toggle("is-disabled", !hasContributions);
+        };
+
         const renderContributions = () => {
             if (!contributions.length) {
                 contributionsList.innerHTML =
                     '<li class="contribution-item"><span>No dishes claimed yet. Add yours!</span></li>';
+                updateContributionEditToggleAvailability();
                 return;
             }
 
@@ -1902,7 +2154,7 @@
                     <div class="contribution-actions">
                         ${
                             contributionsEditing
-                                ? '<button class="btn ghost" type="button" data-contribution-action="edit">Edit</button>'
+                                ? '<button class="edit-icon-button" type="button" data-contribution-action="edit" aria-label="Edit dish"></button>'
                                 : ""
                         }
                     </div>
@@ -1910,6 +2162,7 @@
             `
                 )
                 .join("");
+            updateContributionEditToggleAvailability();
         };
 
         const resetContributionForm = () => {
@@ -1934,6 +2187,7 @@
             renderContributions();
         };
 
+        updateContributionEditToggleAvailability();
         loadContributions();
 
         const toggleContributionForm = (forceClose = false) => {
@@ -1956,7 +2210,7 @@
 
         const toggleContributionEditing = () => {
             contributionsEditing = !contributionsEditing;
-            contributionEditToggle.textContent = contributionsEditing ? "Done editing" : "Edit list";
+            updateContributionEditToggleAvailability();
             if (!contributionsEditing && editingContributionId) {
                 resetContributionForm();
                 toggleContributionForm(true);
