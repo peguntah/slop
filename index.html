@@ -51,6 +51,7 @@
 
         html {
             background: var(--horizon);
+            scroll-behavior: smooth;
         }
 
         html::after {
@@ -289,10 +290,10 @@
 
         .landing-hero {
             max-width: 1200px;
-            width: min(1200px, calc(100% - 2rem));
+            width: min(1200px, calc(100% - clamp(1rem, 3vw, 2rem) * 2));
             margin: 0 auto clamp(2.5rem, 6vw, 4rem);
             padding: clamp(1.5rem, 5vw, 3rem);
-            border-radius: 48px;
+            border-radius: 28px;
             border: 1px solid rgba(255, 255, 255, 0.5);
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(243, 238, 228, 0.75))
                     padding-box,
@@ -311,7 +312,7 @@
             content: "";
             position: absolute;
             inset: 12px;
-            border-radius: 40px;
+            border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.35);
             pointer-events: none;
         }
@@ -353,13 +354,24 @@
         }
 
         .hero-actions {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: 1fr;
             gap: 0.75rem;
         }
 
         .hero-actions .btn {
             text-decoration: none;
+            width: 100%;
+        }
+
+        @media (min-width: 640px) {
+            .hero-actions {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .hero-actions .btn:first-child {
+                grid-column: 1 / -1;
+            }
         }
 
         .landing-hero a.btn {
