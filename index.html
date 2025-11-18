@@ -760,10 +760,13 @@
             .bookshelf-wrapper {
                 margin: 1.25rem 0 0;
                 width: 100%;
+                display: flex;
+                justify-content: center;
             }
 
             .bookshelf {
                 --shelf-side-padding: 1rem;
+                width: min(100%, 420px);
             }
 
             .shelf-track {
@@ -1100,10 +1103,6 @@
             border-radius: 22px;
             background: rgba(255, 255, 255, 0.65);
             scrollbar-width: none;
-        }
-
-        .shelf-track.is-centered {
-            justify-content: center;
         }
 
         .shelf-track::-webkit-scrollbar {
@@ -2018,7 +2017,6 @@
             shelfScrollThumb.style.width = `${thumbWidth}px`;
             shelfScrollThumb.style.transform = `translateX(${offset}px)`;
             shelfScrollTrack.classList.toggle("disabled", maxScroll === 0);
-            shelfTrack.classList.toggle("is-centered", maxScroll === 0);
         };
 
         const scrollShelfToRatio = (ratio, smooth = true) => {
